@@ -1,7 +1,7 @@
 name: Deploy frontend to GitHub Pages
 
 # Set the repository variable API_URL (Settings -> Secrets and variables -> Actions -> Variables)
-# to the Cloud Run URL of the backend, e.g. https://crew-roster-api-xxxx.a.run.app
+# to the backend URL, e.g. https://<hf-user>-crew-roster-copilot.hf.space
 on:
   push:
     branches: [main]
@@ -36,7 +36,7 @@ jobs:
           API_URL: ${{ vars.API_URL }}
         run: |
           if [ -z "$API_URL" ]; then
-            echo "::error::Repository variable API_URL is empty. Set it (Settings -> Secrets and variables -> Actions -> Variables) to the backend Cloud Run URL."
+            echo "::error::Repository variable API_URL is empty. Set it (Settings -> Secrets and variables -> Actions -> Variables) to the backend URL."
             exit 1
           fi
       - run: npm run build

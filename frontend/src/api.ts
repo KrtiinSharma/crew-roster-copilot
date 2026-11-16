@@ -1,4 +1,4 @@
-// Backend base URL: "/api" in dev (Vite proxies and strips it), the Cloud Run URL in production.
+// Backend base URL: "/api" in dev (Vite proxies and strips it), the deployed backend URL in production.
 export const API_URL = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '')
 
 // Request limits enforced by the backend; the UI stays inside them.

@@ -19,7 +19,7 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from pydantic import BaseModel, Field, field_validator
 
 from crew_roster.agent.explain import explain_changes
@@ -168,6 +168,12 @@ def _scenario(ruleset: str, disruptions: list[Disruption],
                         disruptions=res.disruptions, stats=res.stats, pilots=pilot_views(p),
                         flights=flight_views(p), duties=duty_views(res),
                         changes=change_views(res, notes), illegal_duties=res.illegal_duties)
+
+
+@app.get("/", include_in_schema=False)
+def root() -> RedirectResponse:
+    """The Hugging Face Space page shows the app root; send visitors to the API docs."""
+    return RedirectResponse("/docs")
 
 
 @app.get("/health")

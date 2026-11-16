@@ -23,6 +23,12 @@ def sick_body():
             "disruptions": [{"kind": "sick", "pilot_id": pid, "from_day": 3, "to_day": 4}]}
 
 
+def test_root_redirects_to_docs(client):
+    r = client.get("/", follow_redirects=False)
+    assert r.status_code == 307
+    assert r.headers["location"] == "/docs"
+
+
 def test_health_and_rules(client):
     assert client.get("/health").json() == {"status": "ok"}
     rules = client.get("/rules").json()

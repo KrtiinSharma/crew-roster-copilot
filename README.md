@@ -8,7 +8,7 @@ A DGCA-compliant pilot rostering system for a fictional airline, **Skyline Air**
 | **Verification** | One legality checker, separate from the solver, is the single source of truth |
 | **Agent** | LangGraph tool-calling agent on Claude Haiku 5.5 (or Groq gpt-oss), with a number-check guard and one retry |
 | **Evaluation** | 50-scenario optimiser benchmark (CP-SAT vs greedy vs from-scratch), crew sizing, agent eval harness |
-| **Serving** | FastAPI on Google Cloud Run, React UI on GitHub Pages |
+| **Serving** | FastAPI in Docker on a Hugging Face Space, React UI on GitHub Pages |
 
 **Not affiliated with any airline. Skyline Air, its flights, pilots and names are all synthetic, generated from a seed. No real airline data is used.**
 
@@ -43,7 +43,7 @@ flowchart LR
     F --> API[FastAPI]
     N --> API
     API --> UI[React UI<br/>GitHub Pages]
-    API -.runs on.-> CR[Cloud Run]
+    API -.runs on.-> CR[Hugging Face Space<br/>Docker]
 ```
 
 ## How it works
@@ -185,11 +185,11 @@ Copy `.env.example` to `.env`. All keys are optional for the roster and re-plann
 | `JUDGE_MODEL` | Optional Claude judge for the agent eval (default `claude-haiku-5-5`) |
 | `ALLOWED_ORIGINS`, `RATE_LIMIT_PER_MINUTE`, `SOLVE_TIME_LIMIT` | API settings |
 
-`.env` is git-ignored and is never part of the Docker image or the Cloud Run source upload.
+`.env` is git-ignored and is never part of the Docker image or anything uploaded for deployment.
 
 ## Before going live
 
-A checklist for the owner. Steps 1 to 3 are done (keys added, live test passed, agent evaluation run); the judge and steps 4 to 6 are not.
+A checklist for the owner. Steps 1 to 3 are done (keys added, live test passed, agent evaluation run); the judge and steps 4 to 6 are not yet complete.
 
 1. Copy `.env.example` to `.env` and add `ANTHROPIC_API_KEY` (optionally a LangSmith key). Set a monthly spend limit in the Anthropic Console, since the deployed chat is public.
 2. Check the real model API: `uv run pytest -m live`
@@ -204,14 +204,16 @@ A checklist for the owner. Steps 1 to 3 are done (keys added, live test passed, 
    git remote add origin https://github.com/<user>/crew-roster-copilot.git
    git push -u origin main
    ```
-5. Deploy the API (needs the gcloud CLI, logged in, with billing enabled on the project):
-   ```bash
-   uv run python scripts/deploy_cloudrun.py --origins https://krtiinsharma.github.io
-   ```
-   Options: `--project`, `--region`, `--origins`. The script reads keys from `.env`, sets them as service environment variables, and prints the service URL.
-6. In the GitHub repository set the Actions variable `API_URL` to that URL, and enable Pages with the GitHub Actions source. The workflow in `.github/workflows/pages.yml` builds and deploys the frontend.
+5. Deploy the API to a free Hugging Face Space (Docker):
+   - On huggingface.co create a Space with the Docker SDK (blank template), public.
+   - In the Space settings add the secret `GROQ_API_KEY` and the variables `LLM_PROVIDER=groq` and `ALLOWED_ORIGINS=https://<user>.github.io`. Groq's free tier keeps the public demo at no cost; Claude stays the model for local use and the evaluation.
+   - Create a Hugging Face access token with write access. In the GitHub repository add it as the Actions secret `HF_TOKEN`, and add the Actions variable `HF_SPACE=<hf-user>/<space-name>`.
+   - Run the workflow *Deploy backend to Hugging Face Space* (`.github/workflows/hf-space.yml`). It pushes only the Dockerfile, `pyproject.toml`, `uv.lock`, `src/` and the Space README from `deploy/hf-space/`, and runs again on every backend change. The API is then at `https://<hf-user>-<space-name>.hf.space`.
+6. In the GitHub repository set the Actions variable `API_URL` to that URL, enable Pages with the GitHub Actions source, and run the workflow *Deploy frontend to GitHub Pages*.
 
-**Cost.** Chat uses Claude Haiku 5.5 ($0.10 per million input tokens, $0.50 per million output tokens), so a chat answer costs a small fraction of a cent; requests are rate-limited per IP. Cloud Run runs on its free tier (scales to zero, one instance, so the in-memory rate limiter stays meaningful). The Claude judge is optional and costs a few cents; it prints the estimated cost before any call.
+Alternative host: `scripts/deploy_cloudrun.py --origins https://<user>.github.io` deploys the same image to Google Cloud Run (needs the gcloud CLI and billing enabled; reads keys from `.env`).
+
+**Cost.** The deployed demo costs nothing: the Space runs on Hugging Face's free CPU hardware (it sleeps after a period without visitors and wakes on the next request) and chat uses Groq's free tier. Requests are rate-limited per IP. Locally, chat on Claude Haiku 5.5 costs a small fraction of a cent per answer ($0.10 per million input tokens, $0.50 per million output tokens); the optional Claude judge costs a few cents and prints the estimated cost before any call.
 
 ## Tech stack and skills shown
 
@@ -221,7 +223,7 @@ A checklist for the owner. Steps 1 to 3 are done (keys added, live test passed, 
 | Domain modelling | Regulatory rules as data (YAML with CAR references), explicit assumptions |
 | Verification | Independent checker, seeded benchmark against greedy and scratch baselines |
 | LLM engineering | LangGraph tool-calling agent, Claude Haiku 5.5 (Groq gpt-oss as alternative), number-check guard, optional LLM judge, LangSmith tracing |
-| Backend | Python 3.11, FastAPI, pydantic, rate limiting, Docker, Google Cloud Run |
+| Backend | Python 3.11, FastAPI, pydantic, rate limiting, Docker, Hugging Face Spaces (Cloud Run script as an alternative) |
 | Frontend | React 19, Vite, TypeScript, Tailwind, GitHub Pages via Actions |
 | Practice | uv, pytest with slow/live markers, ruff, GitHub Actions CI |
 
@@ -238,10 +240,11 @@ src/crew_roster/
   api/         FastAPI app
   eval/        optimiser benchmark, agent eval, report writer, crew-eval CLI
 frontend/      React + Vite + Tailwind UI
-scripts/       deploy_cloudrun.py
+scripts/       deploy_cloudrun.py (alternative host)
+deploy/        hf-space/README.md (Space card)
 tests/         pytest suite
 docs/          results/RESULTS.md, design spec and plans under superpowers/
-Dockerfile     Cloud Run image
+Dockerfile     backend image (Hugging Face Space or Cloud Run)
 ```
 
 Design spec: [docs/superpowers/specs/2026-11-16-crew-roster-copilot-design.md](docs/superpowers/specs/2026-11-16-crew-roster-copilot-design.md)
