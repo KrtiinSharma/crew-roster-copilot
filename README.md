@@ -94,7 +94,7 @@ This is a portfolio model of the rules, not a compliance tool. Do not use it to 
 
 ## Pilot count: why 80
 
-The first dataset had 60 pilots (30 per base). With that dataset the week was provably not fully crewable: CP-SAT proved that at least 7 seats would stay empty under the weekly-rest rule. So the project uses **80 pilots (40 per base)**, which leaves slack for disruptions to be absorbed. Crew sizing on the 80-pilot dataset finds that **15 captains and 15 first officers per base** can crew the base week (these are upper bounds from CP-SAT, not proven minimums). BOM needs fewer under the Dec-2025 exemption: 12 + 12.
+The first dataset had 60 pilots (30 per base). With that dataset the week was provably not fully crewable: CP-SAT proved that at least 7 seats would stay empty under the weekly-rest rule. So the project uses **80 pilots (40 per base)**, which leaves slack for disruptions to be absorbed. Crew sizing on the 80-pilot dataset finds that **15 captains and 15 first officers per base** can crew the base week (these are upper bounds from CP-SAT, not proven minimums). BOM needs fewer under the Dec-2025 exemption: 12 + 12. Part of that drop comes from the duty builder, not only from the rules: the exemption allows longer night duties, so it builds fewer, longer BOM duties (50 instead of 63).
 
 ## Results
 
@@ -117,10 +117,10 @@ How to read it:
 
 **Crew sizing**: fewest captains / first officers per base that crew every duty (upper bounds).
 
-| Base | Current rules | Dec-2025 exemption | On the roster |
-|---|---|---|---|
-| DEL | 15 / 15 | 15 / 15 | 20 / 20 |
-| BOM | 15 / 15 | 12 / 12 | 20 / 20 |
+| Base | Current rules | Dec-2025 exemption | Duties (current / exemption) | On the roster |
+|---|---|---|---|---|
+| DEL | 15 / 15 | 15 / 15 | 63 / 63 | 20 / 20 |
+| BOM | 15 / 15 | 12 / 12 | 63 / 50 | 20 / 20 |
 
 **Agent evaluation**: not yet run; it needs a Groq key. With `GROQ_API_KEY` in `.env`:
 
