@@ -35,3 +35,6 @@ dev = [
     "pytest>=9.2.0",
     "ruff>=0.17.5",
 ]
+
+[project.scripts]
+crew-solve = "crew_roster.cli:main"

@@ -1,0 +1,508 @@
+{
+ "assignments": {
+  "DEL-D0-07": {
+   "CPT": "DEL-C01",
+   "FO": "DEL-F10"
+  },
+  "DEL-D1-06": {
+   "CPT": "DEL-C01",
+   "FO": "DEL-F15"
+  },
+  "DEL-D5-07": {
+   "CPT": "DEL-C01",
+   "FO": "DEL-F18"
+  },
+  "DEL-D0-04": {
+   "CPT": "DEL-C02",
+   "FO": "DEL-F12"
+  },
+  "DEL-D3-03": {
+   "CPT": "DEL-C02",
+   "FO": "DEL-F01"
+  },
+  "DEL-D4-03": {
+   "CPT": "DEL-C02",
+   "FO": "DEL-F06"
+  },
+  "DEL-D6-01": {
+   "CPT": "DEL-C02",
+   "FO": "DEL-F20"
+  },
+  "DEL-D2-03": {
+   "CPT": "DEL-C03",
+   "FO": "DEL-F02"
+  },
+  "DEL-D3-09": {
+   "CPT": "DEL-C03",
+   "FO": "DEL-F02"
+  },
+  "DEL-D5-02": {
+   "CPT": "DEL-C03",
+   "FO": "DEL-F07"
+  },
+  "DEL-D3-07": {
+   "CPT": "DEL-C04",
+   "FO": "DEL-F17"
+  },
+  "DEL-D4-09": {
+   "CPT": "DEL-C04",
+   "FO": "DEL-F17"
+  },
+  "DEL-D6-08": {
+   "CPT": "DEL-C04",
+   "FO": "DEL-F19"
+  },
+  "DEL-D0-01": {
+   "CPT": "DEL-C05",
+   "FO": "DEL-F03"
+  },
+  "DEL-D1-02": {
+   "CPT": "DEL-C05",
+   "FO": "DEL-F18"
+  },
+  "DEL-D2-07": {
+   "CPT": "DEL-C05",
+   "FO": "DEL-F17"
+  },
+  "DEL-D1-01": {
+   "CPT": "DEL-C06",
+   "FO": "DEL-F03"
+  },
+  "DEL-D4-07": {
+   "CPT": "DEL-C06",
+   "FO": "DEL-F01"
+  },
+  "DEL-D6-07": {
+   "CPT": "DEL-C06",
+   "FO": "DEL-F04"
+  },
+  "DEL-D0-03": {
+   "CPT": "DEL-C07",
+   "FO": "DEL-F11"
+  },
+  "DEL-D1-03": {
+   "CPT": "DEL-C07",
+   "FO": "DEL-F02"
+  },
+  "DEL-D6-04": {
+   "CPT": "DEL-C07",
+   "FO": "DEL-F14"
+  },
+  "DEL-D4-05": {
+   "CPT": "DEL-C08",
+   "FO": "DEL-F09"
+  },
+  "DEL-D5-05": {
+   "CPT": "DEL-C08",
+   "FO": "DEL-F16"
+  },
+  "DEL-D6-06": {
+   "CPT": "DEL-C08",
+   "FO": "DEL-F07"
+  },
+  "DEL-D1-04": {
+   "CPT": "DEL-C09",
+   "FO": "DEL-F01"
+  },
+  "DEL-D2-01": {
+   "CPT": "DEL-C09",
+   "FO": "DEL-F18"
+  },
+  "DEL-D3-05": {
+   "CPT": "DEL-C09",
+   "FO": "DEL-F06"
+  },
+  "DEL-D1-09": {
+   "CPT": "DEL-C10",
+   "FO": "DEL-F05"
+  },
+  "DEL-D5-08": {
+   "CPT": "DEL-C10",
+   "FO": "DEL-F04"
+  },
+  "DEL-D6-09": {
+   "CPT": "DEL-C10",
+   "FO": "DEL-F16"
+  },
+  "DEL-D2-09": {
+   "CPT": "DEL-C11",
+   "FO": "DEL-F10"
+  },
+  "DEL-D4-06": {
+   "CPT": "DEL-C11",
+   "FO": "DEL-F15"
+  },
+  "DEL-D6-03": {
+   "CPT": "DEL-C11",
+   "FO": "DEL-F09"
+  },
+  "DEL-D0-02": {
+   "CPT": "DEL-C12",
+   "FO": "DEL-F16"
+  },
+  "DEL-D3-02": {
+   "CPT": "DEL-C12",
+   "FO": "DEL-F09"
+  },
+  "DEL-D4-02": {
+   "CPT": "DEL-C12",
+   "FO": "DEL-F13"
+  },
+  "DEL-D2-05": {
+   "CPT": "DEL-C13",
+   "FO": "DEL-F06"
+  },
+  "DEL-D3-06": {
+   "CPT": "DEL-C13",
+   "FO": "DEL-F07"
+  },
+  "DEL-D6-05": {
+   "CPT": "DEL-C13",
+   "FO": "DEL-F15"
+  },
+  "DEL-D0-05": {
+   "CPT": "DEL-C14",
+   "FO": "DEL-F08"
+  },
+  "DEL-D3-01": {
+   "CPT": "DEL-C14",
+   "FO": "DEL-F08"
+  },
+  "DEL-D4-04": {
+   "CPT": "DEL-C14",
+   "FO": "DEL-F12"
+  },
+  "DEL-D5-09": {
+   "CPT": "DEL-C14",
+   "FO": "DEL-F03"
+  },
+  "DEL-D2-08": {
+   "CPT": "DEL-C15",
+   "FO": "DEL-F20"
+  },
+  "DEL-D3-08": {
+   "CPT": "DEL-C15",
+   "FO": "DEL-F20"
+  },
+  "DEL-D5-01": {
+   "CPT": "DEL-C15",
+   "FO": "DEL-F12"
+  },
+  "DEL-D2-06": {
+   "CPT": "DEL-C16",
+   "FO": "DEL-F11"
+  },
+  "DEL-D3-04": {
+   "CPT": "DEL-C16",
+   "FO": "DEL-F12"
+  },
+  "DEL-D4-01": {
+   "CPT": "DEL-C16",
+   "FO": "DEL-F08"
+  },
+  "DEL-D5-06": {
+   "CPT": "DEL-C16",
+   "FO": "DEL-F14"
+  },
+  "DEL-D0-06": {
+   "CPT": "DEL-C17",
+   "FO": "DEL-F19"
+  },
+  "DEL-D1-08": {
+   "CPT": "DEL-C17",
+   "FO": "DEL-F11"
+  },
+  "DEL-D6-02": {
+   "CPT": "DEL-C17",
+   "FO": "DEL-F05"
+  },
+  "DEL-D0-09": {
+   "CPT": "DEL-C18",
+   "FO": "DEL-F05"
+  },
+  "DEL-D2-02": {
+   "CPT": "DEL-C18",
+   "FO": "DEL-F14"
+  },
+  "DEL-D5-04": {
+   "CPT": "DEL-C18",
+   "FO": "DEL-F15"
+  },
+  "DEL-D1-05": {
+   "CPT": "DEL-C19",
+   "FO": "DEL-F10"
+  },
+  "DEL-D2-04": {
+   "CPT": "DEL-C19",
+   "FO": "DEL-F04"
+  },
+  "DEL-D5-03": {
+   "CPT": "DEL-C19",
+   "FO": "DEL-F08"
+  },
+  "DEL-D0-08": {
+   "CPT": "DEL-C20",
+   "FO": "DEL-F13"
+  },
+  "DEL-D1-07": {
+   "CPT": "DEL-C20",
+   "FO": "DEL-F13"
+  },
+  "DEL-D4-08": {
+   "CPT": "DEL-C20",
+   "FO": "DEL-F19"
+  },
+  "BOM-D3-08": {
+   "CPT": "BOM-C01",
+   "FO": "BOM-F07"
+  },
+  "BOM-D5-02": {
+   "CPT": "BOM-C01",
+   "FO": "BOM-F13"
+  },
+  "BOM-D6-03": {
+   "CPT": "BOM-C01",
+   "FO": "BOM-F20"
+  },
+  "BOM-D0-01": {
+   "CPT": "BOM-C02",
+   "FO": "BOM-F13"
+  },
+  "BOM-D4-09": {
+   "CPT": "BOM-C02",
+   "FO": "BOM-F18"
+  },
+  "BOM-D5-07": {
+   "CPT": "BOM-C02",
+   "FO": "BOM-F03"
+  },
+  "BOM-D6-08": {
+   "CPT": "BOM-C02",
+   "FO": "BOM-F15"
+  },
+  "BOM-D0-09": {
+   "CPT": "BOM-C03",
+   "FO": "BOM-F10"
+  },
+  "BOM-D1-07": {
+   "CPT": "BOM-C03",
+   "FO": "BOM-F10"
+  },
+  "BOM-D4-01": {
+   "CPT": "BOM-C03",
+   "FO": "BOM-F09"
+  },
+  "BOM-D3-01": {
+   "CPT": "BOM-C04",
+   "FO": "BOM-F11"
+  },
+  "BOM-D4-04": {
+   "CPT": "BOM-C04",
+   "FO": "BOM-F16"
+  },
+  "BOM-D5-01": {
+   "CPT": "BOM-C04",
+   "FO": "BOM-F17"
+  },
+  "BOM-D6-07": {
+   "CPT": "BOM-C04",
+   "FO": "BOM-F19"
+  },
+  "BOM-D0-07": {
+   "CPT": "BOM-C05",
+   "FO": "BOM-F06"
+  },
+  "BOM-D1-08": {
+   "CPT": "BOM-C05",
+   "FO": "BOM-F05"
+  },
+  "BOM-D6-02": {
+   "CPT": "BOM-C05",
+   "FO": "BOM-F18"
+  },
+  "BOM-D2-09": {
+   "CPT": "BOM-C06",
+   "FO": "BOM-F14"
+  },
+  "BOM-D4-06": {
+   "CPT": "BOM-C06",
+   "FO": "BOM-F12"
+  },
+  "BOM-D5-09": {
+   "CPT": "BOM-C06",
+   "FO": "BOM-F04"
+  },
+  "BOM-D6-09": {
+   "CPT": "BOM-C06",
+   "FO": "BOM-F12"
+  },
+  "BOM-D2-05": {
+   "CPT": "BOM-C07",
+   "FO": "BOM-F17"
+  },
+  "BOM-D3-09": {
+   "CPT": "BOM-C07",
+   "FO": "BOM-F08"
+  },
+  "BOM-D5-03": {
+   "CPT": "BOM-C07",
+   "FO": "BOM-F08"
+  },
+  "BOM-D6-04": {
+   "CPT": "BOM-C07",
+   "FO": "BOM-F08"
+  },
+  "BOM-D2-08": {
+   "CPT": "BOM-C08",
+   "FO": "BOM-F07"
+  },
+  "BOM-D5-06": {
+   "CPT": "BOM-C08",
+   "FO": "BOM-F12"
+  },
+  "BOM-D6-06": {
+   "CPT": "BOM-C08",
+   "FO": "BOM-F16"
+  },
+  "BOM-D1-01": {
+   "CPT": "BOM-C09",
+   "FO": "BOM-F01"
+  },
+  "BOM-D2-04": {
+   "CPT": "BOM-C09",
+   "FO": "BOM-F03"
+  },
+  "BOM-D4-03": {
+   "CPT": "BOM-C09",
+   "FO": "BOM-F13"
+  },
+  "BOM-D0-03": {
+   "CPT": "BOM-C10",
+   "FO": "BOM-F08"
+  },
+  "BOM-D3-06": {
+   "CPT": "BOM-C10",
+   "FO": "BOM-F02"
+  },
+  "BOM-D5-04": {
+   "CPT": "BOM-C10",
+   "FO": "BOM-F16"
+  },
+  "BOM-D3-02": {
+   "CPT": "BOM-C11",
+   "FO": "BOM-F09"
+  },
+  "BOM-D4-02": {
+   "CPT": "BOM-C11",
+   "FO": "BOM-F10"
+  },
+  "BOM-D5-05": {
+   "CPT": "BOM-C11",
+   "FO": "BOM-F11"
+  },
+  "BOM-D0-05": {
+   "CPT": "BOM-C12",
+   "FO": "BOM-F04"
+  },
+  "BOM-D1-05": {
+   "CPT": "BOM-C12",
+   "FO": "BOM-F17"
+  },
+  "BOM-D2-01": {
+   "CPT": "BOM-C13",
+   "FO": "BOM-F18"
+  },
+  "BOM-D3-03": {
+   "CPT": "BOM-C13",
+   "FO": "BOM-F13"
+  },
+  "BOM-D6-05": {
+   "CPT": "BOM-C13",
+   "FO": "BOM-F14"
+  },
+  "BOM-D1-06": {
+   "CPT": "BOM-C14",
+   "FO": "BOM-F07"
+  },
+  "BOM-D2-06": {
+   "CPT": "BOM-C14",
+   "FO": "BOM-F01"
+  },
+  "BOM-D3-07": {
+   "CPT": "BOM-C14",
+   "FO": "BOM-F18"
+  },
+  "BOM-D0-02": {
+   "CPT": "BOM-C15",
+   "FO": "BOM-F11"
+  },
+  "BOM-D1-02": {
+   "CPT": "BOM-C15",
+   "FO": "BOM-F20"
+  },
+  "BOM-D4-08": {
+   "CPT": "BOM-C15",
+   "FO": "BOM-F19"
+  },
+  "BOM-D6-01": {
+   "CPT": "BOM-C15",
+   "FO": "BOM-F02"
+  },
+  "BOM-D0-04": {
+   "CPT": "BOM-C16",
+   "FO": "BOM-F16"
+  },
+  "BOM-D1-03": {
+   "CPT": "BOM-C16",
+   "FO": "BOM-F02"
+  },
+  "BOM-D5-08": {
+   "CPT": "BOM-C16",
+   "FO": "BOM-F06"
+  },
+  "BOM-D2-03": {
+   "CPT": "BOM-C17",
+   "FO": "BOM-F20"
+  },
+  "BOM-D4-05": {
+   "CPT": "BOM-C17",
+   "FO": "BOM-F01"
+  },
+  "BOM-D0-08": {
+   "CPT": "BOM-C18",
+   "FO": "BOM-F05"
+  },
+  "BOM-D1-09": {
+   "CPT": "BOM-C18",
+   "FO": "BOM-F14"
+  },
+  "BOM-D2-07": {
+   "CPT": "BOM-C18",
+   "FO": "BOM-F15"
+  },
+  "BOM-D3-05": {
+   "CPT": "BOM-C19",
+   "FO": "BOM-F01"
+  },
+  "BOM-D4-07": {
+   "CPT": "BOM-C19",
+   "FO": "BOM-F07"
+  },
+  "BOM-D0-06": {
+   "CPT": "BOM-C20",
+   "FO": "BOM-F09"
+  },
+  "BOM-D1-04": {
+   "CPT": "BOM-C20",
+   "FO": "BOM-F15"
+  },
+  "BOM-D2-02": {
+   "CPT": "BOM-C20",
+   "FO": "BOM-F19"
+  },
+  "BOM-D3-04": {
+   "CPT": "BOM-C20",
+   "FO": "BOM-F12"
+  }
+ }
+}
