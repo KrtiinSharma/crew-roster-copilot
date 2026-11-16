@@ -26,7 +26,7 @@ Each later plan is written with superpowers:writing-plans against the code Plan 
 - Python `>=3.11, <3.13`; manage everything with `uv` (`uv add`, `uv run`); never `pip install`.
 - API keys only in `.env` (gitignored); never print, echo or commit them. Plan 1 needs no keys.
 - The app's airline is the fictional **"Skyline Air"**; no IndiGo name, logo or colours in code-facing UI strings.
-- Pilots only, one fleet (A320), bases `DEL` and `BOM`, 7-day roster, 60 pilots (30 per base, 15 CPT + 15 FO).
+- Pilots only, one fleet (A320), bases `DEL` and `BOM`, 7-day roster, 80 pilots (40 per base, 20 CPT + 20 FO; raised from 60 during Task 4, owner-approved).
 - Every flight is part of a **turn** (base → outstation → base). Duties are 1–2 turns (≤ 4 flights) starting and ending at the same base. No overnights away from base.
 - Simplifications that must stay consistent between solver and checker: a duty belongs to the calendar day of its report time; weekly rest = 2 consecutive calendar days with no duty touching them in every 7-day window; consecutive nights = night duties on consecutive calendar days; the solver also enforces at most one duty per pilot per calendar day (operational rule, not checked as DGCA).
 - The owner's laptop is slow. Every solve in tests uses `time_limit ≤ 10`. Tests that take > 10 s are marked `@pytest.mark.slow` and excluded by default.

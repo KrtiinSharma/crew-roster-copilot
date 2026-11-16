@@ -63,7 +63,7 @@ explanations all go through it. Reasons given to users come from checker output,
   realistic and fixed in a table (e.g. DEL–BOM 2h10).
 - ~40 flights/day × 7 days, published as rotations out of each base, so out-and-back duties exist.
   Includes a few departures in 00:00–06:00 so the night rules matter.
-- 60 A320 pilots: 30 per base, half captains (CPT) and half first officers (FO). Each pilot has a
+- 80 A320 pilots: 40 per base, half captains (CPT) and half first officers (FO) (raised from 60: with 30 per base the DGCA weekly-rest rule left 7 duty slots uncrewable; 38 per base is the minimum, 40 leaves slack for disruptions). Each pilot has a
   27-day synthetic history (flight hours, duty hours, end time of last duty, consecutive nights,
   last 48h rest) so 7-day and 28-day rolling limits matter from day 1, plus a few pre-booked leave days.
 - Generated from a fixed seed, so it is identical on every run.
