@@ -8,6 +8,7 @@ from crew_roster.disrupt import Disruption, apply, lock_time
 from crew_roster.models import Frozen, Roster
 from crew_roster.problem import Problem
 from crew_roster.roster.diff import Change, diff
+from crew_roster.roster.greedy import greedy_repair
 from crew_roster.roster.solver import SolveResult, solve
 
 
@@ -31,6 +32,8 @@ def replan(
         result = solve(new, base=base, locked_before=lock, time_limit=time_limit)
     elif method == "scratch":
         result = solve(new, base=base, locked_before=lock, time_limit=time_limit, change_weight=0)
+    elif method == "greedy":
+        result = greedy_repair(new, base, locked_before=lock)
     else:
         raise ValueError(f"unknown method {method!r}")
     return Replan(
