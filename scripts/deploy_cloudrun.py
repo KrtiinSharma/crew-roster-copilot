@@ -10,6 +10,7 @@ limiter stays meaningful.
 """
 
 import argparse
+import json
 import shutil
 import subprocess
 import tempfile
@@ -64,7 +65,8 @@ def main() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         env_file = Path(tmp) / "env.yaml"
         env_file.write_text(
-            "".join(f'{k}: "{v}"\n' for k, v in env_vars(args.origins).items()), encoding="utf-8"
+            "".join(f"{k}: {json.dumps(v)}\n" for k, v in env_vars(args.origins).items()),
+            encoding="utf-8",
         )
         gcloud(
             "run", "deploy", SERVICE,

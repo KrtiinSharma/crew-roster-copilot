@@ -17,3 +17,6 @@ frontend/dist/
 # Local outputs
 *.log
 .cache/
+
+# Claude Code local settings
+.claude/

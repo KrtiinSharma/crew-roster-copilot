@@ -6,6 +6,7 @@
 frontend
 .github
 .superpowers
+.claude
 tests
 docs/superpowers
 __pycache__
