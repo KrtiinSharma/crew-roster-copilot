@@ -15,7 +15,9 @@ def row(scenario, size, method, changes, uncrewed, seconds):
 ROWS = [row("S00", "small", "cpsat", 1, 0, 2.0), row("S00", "small", "greedy", 1, 0, 0.02),
         row("S00", "small", "scratch", 40, 0, 6.0), row("S01", "large", "cpsat", 7, 0, 8.0),
         row("S01", "large", "greedy", 5, 2, 0.03), row("S01", "large", "scratch", 190, 0, 10.0)]
-SIZING = [{"base": b, "ruleset": rs, "duties": 63, "pilots_available": {"CPT": 20, "FO": 20},
+SIZING = [{"base": b, "ruleset": rs,
+           "duties": 50 if (b, rs) == ("BOM", "dgca_dec2025_exemption") else 63,
+           "pilots_available": {"CPT": 20, "FO": 20},
            "pilots_needed": {"CPT": n, "FO": n + 1}, "uncovered": 0, "feasible": True,
            "proven_optimal": rs == "dgca_current", "seconds": 15.0}
           for b, n0 in (("DEL", 17), ("BOM", 16))
@@ -44,6 +46,13 @@ def test_report_with_only_optimiser_data(tmp_path):
     assert "greedy 2 (0)" in md  # uncrewed seats (of which on illegal duties)
     assert "| DEL | 17 / 18 | 16 / 17 |" in md
     assert "proven" in md and "upper bound" in md
+    assert "| 63 / 63 |" in md and "| 63 / 50 |" in md  # duties per ruleset
+    assert "fewer, longer BOM duties" in md
+    assert "hit its time limit" in md and "0/2 runs" in md  # no scratch row is FEASIBLE
+    assert ("In the 1 scenarios where CP-SAT crewed more seats than greedy, greedy made fewer "
+            "changes than CP-SAT in 1") in md
+    assert "deterministic time limit" in md and "15 s" not in md
+    assert "timings vary by machine" in md
     assert "uv run crew-eval agent" in md  # agent section explains how to fill it
     assert "Claude judge" in md
 
@@ -64,6 +73,7 @@ def test_report_with_agent_and_judge_data(tmp_path):
     (tmp_path / "agent-openai-gpt-oss-120b.json").write_text(json.dumps(agent), encoding="utf-8")
     md = build_report(tmp_path)
     assert "| openai/gpt-oss-120b | 2 | 100% | 50% | 75% | 100% | 1.5 | 3.2 |" in md
+    assert "2 questions in 1 categories" in md and "About 36" not in md
     assert "| openai/gpt-oss-120b | hours | 1 |" in md
     assert "| openai/gpt-oss-120b | replan | 10 | 4.6 | 4.2 |" in md
 

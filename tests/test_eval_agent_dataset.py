@@ -22,6 +22,7 @@ def cases(monkeypatch):
     return build_dataset(seed=5, per_category=2, time_limit=2.0)
 
 
+@pytest.mark.slow  # fixture setup builds and solves the base problem: >10 s cold
 def test_small_dataset_is_deterministic_and_well_formed(cases, monkeypatch):
     assert cases == build_dataset(seed=5, per_category=2, time_limit=2.0)
     assert [c.category for c in cases].count("sizing") == 4
@@ -34,6 +35,7 @@ def test_small_dataset_is_deterministic_and_well_formed(cases, monkeypatch):
         assert c.ruleset in ("dgca_current", "dgca_dec2025_exemption")
 
 
+@pytest.mark.slow
 def test_ground_truth_comes_from_the_service(cases):
     h = next(c for c in cases if c.category == "hours")
     st = pilot_status(evaluate(h.ruleset, []), h.expected_args["pilot_id"], h.expected_args["day"])
@@ -47,6 +49,8 @@ def test_ground_truth_comes_from_the_service(cases):
 
     w = next(c for c in cases if c.category == "what_if")
     assert w.disruptions == [] and w.expected_tool == "what_if"
+    assert set(w.expected_args["sick"][0]) == {"pilot_id", "from_day", "to_day"}
+    assert w.expected_args["sick"][0]["pilot_id"] in w.question
     assert len(w.expected_numbers) == 1
 
     e = next(c for c in cases if c.category == "explain")

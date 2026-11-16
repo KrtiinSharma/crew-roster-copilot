@@ -75,6 +75,30 @@ def test_resume_skips_rows_already_in_the_file(tmp_path, monkeypatch):
     assert calls == []
 
 
+@pytest.mark.parametrize("change", [{"n": 3}, {"methods": ("cpsat",)}, {"seed": 12}])
+def test_resume_refuses_a_different_config(tmp_path, monkeypatch, change):
+    monkeypatch.setattr(optimiser, "replan", lambda *a, **k: pytest.fail("must not solve"))
+    out = tmp_path / "optimiser.json"
+    config = {"n": 2, "seed": 11, "ruleset": "dgca_current", "time_limit": 5.0,
+              "methods": ["greedy"]}
+    out.write_text(json.dumps({"config": config, "rows": []}), encoding="utf-8")
+    kwargs = {"n": 2, "time_limit": 5.0, "methods": ("greedy",), **change}
+    with pytest.raises(SystemExit, match="--out"):
+        run_optimiser_eval(out=out, **kwargs)
+    assert json.loads(out.read_text(encoding="utf-8"))["config"] == config  # untouched
+
+
+def test_committed_results_resume_as_a_no_op_with_default_settings(tmp_path, monkeypatch):
+    committed = optimiser.RESULTS_DIR / "optimiser.json"
+    out = tmp_path / "optimiser.json"
+    out.write_bytes(committed.read_bytes())
+    monkeypatch.setattr(optimiser, "replan", lambda *a, **k: pytest.fail("must not solve"))
+    monkeypatch.setattr(optimiser, "sizing_table", lambda *a, **k: pytest.fail("has sizing"))
+    before = json.loads(out.read_text(encoding="utf-8"))["rows"]
+    data = run_optimiser_eval(out=out)  # the defaults `crew-eval optimiser` uses
+    assert data["rows"] == before and len(before) == 150
+
+
 @pytest.mark.slow
 def test_sizing_table_covers_both_bases_and_rulesets():
     table = optimiser.sizing_table(time_limit=15.0)

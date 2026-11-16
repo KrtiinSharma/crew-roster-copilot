@@ -23,8 +23,12 @@ from crew_roster.eval.optimiser import RESULTS_DIR, write_json
 SCORES = ("tool_ok", "args_ok", "numbers_recall", "names_ok", "grounded", "n_tool_calls",
           "seconds")
 LS_DATASET = "crew-roster-agent"
-JUDGE_PRICE = {"input": 0.10, "output": 0.50}  # USD per million tokens, claude-haiku-5-5
+# Judge cost ESTIMATE only. Verify current pricing before running: these constants are not
+# fetched from anywhere. USD per million tokens for the judge model (claude-haiku-5-5), and the
+# assumed reply length (the judge answers with one short JSON object).
+JUDGE_PRICE = {"input": 0.10, "output": 0.50}
 JUDGE_OUTPUT_TOKENS = 120
+TRANSIENT_ERRORS = ("APITimeoutError", "APIConnectionError", "InternalServerError")
 REPLAN_EXPLANATIONS = 10
 RATE_LIMIT_WAIT = 30.0
 
@@ -33,8 +37,19 @@ def model_slug(model: str) -> str:
     return re.sub(r"[^a-z0-9.]+", "-", model.lower()).strip("-")
 
 
+def _matches(actual, expected) -> bool:
+    """Subset match: dicts need the expected keys, lists need an actual item per expected one."""
+    if isinstance(expected, dict):
+        return isinstance(actual, dict) and all(
+            k in actual and _matches(actual[k], v) for k, v in expected.items())
+    if isinstance(expected, list):
+        return isinstance(actual, list) and all(
+            any(_matches(a, e) for a in actual) for e in expected)
+    return actual == expected
+
+
 def _contains(args: dict, expected: dict) -> bool:
-    return all(args.get(k) == v for k, v in expected.items())
+    return _matches(args, expected)
 
 
 def score(case: AgentCase, answer: AgentAnswer, seconds: float = 0.0) -> dict:
@@ -93,6 +108,13 @@ def _rate_limited(exc: Exception) -> bool:
     return type(exc).__name__ == "RateLimitError" or getattr(exc, "status_code", None) == 429
 
 
+def _transient(exc: Exception) -> bool:
+    """Network trouble or a provider 5xx: says nothing about the model, so never scored."""
+    status = getattr(exc, "status_code", None)
+    return (type(exc).__name__ in TRANSIENT_ERRORS
+            or (isinstance(status, int) and status >= 500))
+
+
 def _daily(exc: Exception) -> bool:
     msg = str(exc).lower()
     return any(s in msg for s in ("per day", "(tpd)", "(rpd)", "daily"))
@@ -120,11 +142,13 @@ def _check_keys(s: Settings, judge: bool, langsmith: bool) -> None:
 def run_agent_eval(model: str, cases: Sequence[AgentCase] | None = None,
                    llm_factory: LlmFactory | None = None, out: Path | None = None,
                    judge: bool = False, langsmith: bool = False, limit: int | None = None,
-                   pause: float = 2.0, time_limit: float = 10.0,
-                   log: Callable[[str], None] = print) -> dict:
+                   rejudge: bool = False, pause: float = 2.0,
+                   time_limit: float | None = None, log: Callable[[str], None] = print) -> dict:
     """Run every case once (resumable by case id) and write rows + summary as JSON."""
     settings = get_settings()
     _check_keys(settings, judge, langsmith)
+    if time_limit is None:
+        time_limit = settings.solve_time_limit  # same as the API, so the agent sees one planner
     factory = llm_factory or groq_factory(model)
     out = Path(out or RESULTS_DIR / f"agent-{model_slug(model)}.json")
     if cases is None:
@@ -151,7 +175,7 @@ def run_agent_eval(model: str, cases: Sequence[AgentCase] | None = None,
                                 llm_factory=factory, time_limit=time_limit)
                 rows.append(_row(case, ans, time.perf_counter() - t0))
                 break
-            except Exception as exc:  # every failure is either scored as a miss or stops
+            except Exception as exc:  # rate limits / transient errors stop; the rest are misses
                 if _rate_limited(exc) and (_daily(exc) or attempt == 1):
                     data["stopped"] = f"{'daily limit' if _daily(exc) else 'rate limit'}: {exc}"
                     break
@@ -159,6 +183,9 @@ def run_agent_eval(model: str, cases: Sequence[AgentCase] | None = None,
                     log(f"{case.id}: rate limited, waiting {RATE_LIMIT_WAIT:.0f} s")
                     time.sleep(RATE_LIMIT_WAIT)
                     continue
+                if _transient(exc):
+                    data["stopped"] = f"transient error ({type(exc).__name__}): {exc}"
+                    break
                 empty = AgentAnswer(answer="", verified=False, ungrounded=[], tool_calls=[])
                 rows.append(_row(case, empty, time.perf_counter() - t0,
                                  error=f"{type(exc).__name__}: {exc}"))
@@ -175,7 +202,8 @@ def run_agent_eval(model: str, cases: Sequence[AgentCase] | None = None,
     data["summary"] = summarise(rows)
     write_json(out, data)
     if judge and not data["stopped"]:
-        data["judge"] = run_judge(cases, rows, settings, factory, time_limit, log)
+        data["judge"] = run_judge(cases, rows, settings, factory, time_limit, log,
+                                 previous=old.get("judge"), rejudge=rejudge)
         write_json(out, data)
     if langsmith:
         log_langsmith(model, cases, rows, settings)
@@ -231,19 +259,27 @@ def _judge_items(cases: Sequence[AgentCase], rows: Sequence[dict], factory: LlmF
 
 
 def run_judge(cases: Sequence[AgentCase], rows: Sequence[dict], settings: Settings,
-              factory: LlmFactory, time_limit: float, log: Callable[[str], None]) -> dict:
+              factory: LlmFactory, time_limit: float, log: Callable[[str], None],
+              previous: dict | None = None, rejudge: bool = False) -> dict:
+    """Score the items; ones already scored in `previous` are kept unless `rejudge`."""
     from langchain_anthropic import ChatAnthropic
     from langchain_core.messages import HumanMessage, SystemMessage
 
-    items = _judge_items(cases, rows, factory, time_limit)
+    kept = {} if rejudge else {(i["source"], i["id"]): i for i in (previous or {}).get("items", [])
+                               if i.get("faithful") is not None}
+    all_items = _judge_items(cases, rows, factory, time_limit)
+    items = [i for i in all_items if (i["source"], i["id"]) not in kept]
+    if kept:
+        log(f"judge: {len(all_items) - len(items)} items already scored, skipping "
+            "(use --rejudge to score them again)")
     prompts = [json.dumps({"reasons": i["reasons"], "sentence": i["sentence"]}) for i in items]
     avg_in = int(statistics.fmean(len(JUDGE_PROMPT + p) for p in prompts) / 4) if prompts else 0
     cost = judge_cost(len(items), avg_in)
     log(f"judge: {len(items)} calls to {settings.judge_model}, ~{avg_in} input + "
         f"~{JUDGE_OUTPUT_TOKENS} output tokens each, estimated ${cost:.4f}")
-    llm = ChatAnthropic(model=settings.judge_model, api_key=settings.anthropic_api_key,
-                        max_tokens=300, max_retries=2, timeout=60)
     scored = []
+    llm = (ChatAnthropic(model=settings.judge_model, api_key=settings.anthropic_api_key,
+                         max_tokens=300, max_retries=2, timeout=60) if items else None)
     for item, prompt in zip(items, prompts, strict=True):
         try:
             reply = text_of(llm.invoke([SystemMessage(JUDGE_PROMPT), HumanMessage(prompt)]))
@@ -253,6 +289,8 @@ def run_judge(cases: Sequence[AgentCase], rows: Sequence[dict], settings: Settin
                            "clear": int(verdict["clear"]), "why": str(verdict.get("why", ""))})
         except Exception as exc:  # one bad reply must not lose the others
             scored.append({**item, "faithful": None, "clear": None, "why": f"error: {exc}"})
+    fresh = {(i["source"], i["id"]): i for i in scored}
+    scored = [kept.get(k) or fresh[k] for k in ((i["source"], i["id"]) for i in all_items)]
     summary = {}
     for src in dict.fromkeys(i["source"] for i in scored):
         mine = [i for i in scored if i["source"] == src and i["faithful"] is not None]
@@ -261,6 +299,7 @@ def run_judge(cases: Sequence[AgentCase], rows: Sequence[dict], settings: Settin
             "faithful": round(statistics.fmean(i["faithful"] for i in mine), 2) if mine else None,
             "clear": round(statistics.fmean(i["clear"] for i in mine), 2) if mine else None,
         }
+    # estimated_cost_usd covers only the calls made in this run
     return {"model": settings.judge_model, "estimated_cost_usd": round(cost, 4),
             "items": scored, "summary": summary}
 

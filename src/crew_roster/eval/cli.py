@@ -15,7 +15,7 @@ def main(argv: list[str] | None = None) -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     o = sub.add_parser("optimiser", help="CP-SAT vs greedy vs scratch benchmark + crew sizing "
-                                         "(no LLM; ~15-20 min)")
+                                         "(no LLM; roughly 25 min)")
     o.add_argument("--n", type=int, default=50, help="number of scenarios")
     o.add_argument("--time-limit", type=float, default=10.0, help="CP-SAT seconds per solve")
 
@@ -24,6 +24,8 @@ def main(argv: list[str] | None = None) -> int:
     a.add_argument("--limit", type=int, default=None, help="only the first N cases")
     a.add_argument("--judge", action="store_true",
                    help="score explanations with Claude (needs ANTHROPIC_API_KEY; costs cents)")
+    a.add_argument("--rejudge", action="store_true",
+                   help="with --judge: score items again even if they already have a score")
     a.add_argument("--langsmith", action="store_true",
                    help="log the run as a LangSmith experiment (needs LANGSMITH_API_KEY)")
 
@@ -37,7 +39,8 @@ def main(argv: list[str] | None = None) -> int:
         run_optimiser_eval(n=args.n, time_limit=args.time_limit, out=out_dir / "optimiser.json")
     elif args.cmd == "agent":
         run_agent_eval(args.model, out=out_dir / f"agent-{model_slug(args.model)}.json",
-                       limit=args.limit, judge=args.judge, langsmith=args.langsmith)
+                       limit=args.limit, judge=args.judge, rejudge=args.rejudge,
+                       langsmith=args.langsmith)
     if args.cmd == "report" or (out_dir / "optimiser.json").exists():
         print(f"wrote {write_report(out_dir)}")
     return 0

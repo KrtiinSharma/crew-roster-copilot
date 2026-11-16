@@ -1,5 +1,9 @@
 import json
+import sys
+import types
 
+import groq
+import httpx
 import pytest
 from fakes import ScriptedChatModel, tool_call
 from langchain_core.messages import AIMessage
@@ -121,6 +125,139 @@ def test_daily_limit_stops_cleanly_and_keeps_progress(tmp_path):
     assert [r["id"] for r in data["rows"]] == ["roster-00"]
     assert data["stopped"].startswith("daily limit")
     assert json.loads(out.read_text(encoding="utf-8"))["rows"][0]["id"] == "roster-00"
+
+
+REQUEST = httpx.Request("POST", "https://api.groq.com/openai/v1/chat/completions")
+
+
+def status_error(cls, status):
+    return cls("boom", response=httpx.Response(status, request=REQUEST), body=None)
+
+
+@pytest.mark.parametrize("exc", [
+    groq.APITimeoutError(request=REQUEST),
+    groq.APIConnectionError(request=REQUEST),
+    status_error(groq.InternalServerError, 500),
+    status_error(groq.APIStatusError, 503),
+], ids=["timeout", "connection", "500", "503"])
+def test_transient_errors_stop_cleanly_and_are_never_scored(tmp_path, exc):
+    made = []
+
+    def factory(tools):
+        made.append(1)
+        if len(made) == 2:
+            raise exc
+        return ScriptedChatModel(script=[AIMessage(content="No idea.")])
+
+    out = tmp_path / "agent.json"
+    data = run_agent_eval("fake/model", [ROSTER, HOURS], llm_factory=factory, out=out, pause=0)
+    assert [r["id"] for r in data["rows"]] == ["roster-00"]
+    assert data["stopped"].startswith("transient error")
+    assert json.loads(out.read_text(encoding="utf-8"))["stopped"] == data["stopped"]
+
+    again = run_agent_eval("fake/model", [ROSTER, HOURS], out=out, pause=0,
+                           llm_factory=lambda t: ScriptedChatModel(
+                               script=[AIMessage(content="Still no idea.")]))
+    assert [r["id"] for r in again["rows"]] == ["roster-00", "hours-00"]  # resumed
+    assert again["stopped"] is None
+
+
+def test_groq_bad_request_is_a_failed_row_not_a_stop(tmp_path):
+    def factory(tools):
+        raise status_error(groq.BadRequestError, 400)
+
+    data = run_agent_eval("fake/model", [ROSTER], llm_factory=factory,
+                          out=tmp_path / "a.json", pause=0)
+    assert data["stopped"] is None and data["rows"][0]["error"].startswith("BadRequestError")
+
+
+def test_per_minute_rate_limit_waits_then_retries(tmp_path, monkeypatch):
+    sleeps = []
+    monkeypatch.setattr(agent_eval.time, "sleep", sleeps.append)
+    made = []
+
+    def factory(tools):
+        made.append(1)
+        if len(made) == 1:
+            raise RateLimitError("Rate limit reached: tokens per minute (TPM)")
+        return ScriptedChatModel(script=[AIMessage(content="No idea.")])
+
+    data = run_agent_eval("fake/model", [ROSTER], llm_factory=factory,
+                          out=tmp_path / "a.json", pause=0)
+    assert sleeps == [agent_eval.RATE_LIMIT_WAIT] and len(made) == 2
+    assert [r["id"] for r in data["rows"]] == ["roster-00"] and data["stopped"] is None
+
+
+def test_second_per_minute_rate_limit_stops(tmp_path, monkeypatch):
+    monkeypatch.setattr(agent_eval.time, "sleep", lambda s: None)
+
+    def factory(tools):
+        raise RateLimitError("Rate limit reached: tokens per minute (TPM)")
+
+    data = run_agent_eval("fake/model", [ROSTER], llm_factory=factory,
+                          out=tmp_path / "a.json", pause=0)
+    assert data["rows"] == [] and data["stopped"].startswith("rate limit")
+
+
+def test_args_use_subset_matching_for_nested_what_if_arguments():
+    case = HOURS.model_copy(update={"expected_tool": "what_if", "expected_numbers": [],
+                                    "expected_args": {"sick": [{"pilot_id": "P1", "from_day": 2,
+                                                                "to_day": 3}]}})
+    sick = {"pilot_id": "P1", "from_day": 2, "to_day": 3, "kind": "sick"}
+    assert score(case, answer("x", [("what_if", {"sick": [sick], "delays": []})]))["args_ok"]
+    wrong = {**sick, "to_day": 4}
+    assert not score(case, answer("x", [("what_if", {"sick": [wrong]})]))["args_ok"]
+    assert not score(case, answer("x", [("what_if", {"delays": []})]))["args_ok"]
+
+
+def test_default_time_limit_is_the_api_setting(tmp_path, monkeypatch):
+    seen = []
+    real = agent_eval.run_agent
+
+    def spy(*a, **kw):
+        seen.append(kw["time_limit"])
+        return real(*a, **kw)
+
+    monkeypatch.setattr(agent_eval, "run_agent", spy)
+    monkeypatch.setattr(agent_eval, "get_settings",
+                        lambda: Settings(_env_file=None, solve_time_limit=3.5))
+    data = run_agent_eval("fake/model", [ROSTER], out=tmp_path / "a.json", pause=0,
+                          llm_factory=lambda t: ScriptedChatModel(
+                              script=[AIMessage(content="x")]))
+    assert seen == [3.5] and data["config"]["time_limit"] == 3.5
+
+
+def fake_anthropic(monkeypatch, calls):
+    class Chat:
+        def __init__(self, **kw):
+            pass
+
+        def invoke(self, messages):
+            calls.append(1)
+            return AIMessage(content='{"faithful": 5, "clear": 4, "why": "ok"}')
+
+    monkeypatch.setitem(sys.modules, "langchain_anthropic",
+                        types.SimpleNamespace(ChatAnthropic=Chat))
+
+
+def test_judge_skips_scored_items_unless_rejudge(monkeypatch):
+    items = [{"source": "replan", "id": f"S0/{i}", "sentence": "x", "reasons": []}
+             for i in range(3)]
+    monkeypatch.setattr(agent_eval, "_judge_items", lambda *a: [dict(i) for i in items])
+    calls = []
+    fake_anthropic(monkeypatch, calls)
+    settings = Settings(_env_file=None, anthropic_api_key="test")
+    previous = {"items": [{**items[0], "faithful": 3, "clear": 3, "why": "old"},
+                          {**items[1], "faithful": None, "clear": None, "why": "error"}]}
+    out = agent_eval.run_judge([], [], settings, None, 1.0, lambda m: None, previous=previous)
+    assert len(calls) == 2  # item 0 kept; the errored item 1 and new item 2 scored
+    assert [i["faithful"] for i in out["items"]] == [3, 5, 5]
+    assert out["summary"]["replan"]["n"] == 3
+
+    calls.clear()
+    agent_eval.run_judge([], [], settings, None, 1.0, lambda m: None, previous=previous,
+                         rejudge=True)
+    assert len(calls) == 3
 
 
 def test_other_errors_are_recorded_as_failed_rows(tmp_path):

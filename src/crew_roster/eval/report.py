@@ -40,13 +40,13 @@ def _optimiser(data: dict | None) -> list[str]:
     out = ["## Optimiser benchmark", ""]
     if not data or not data.get("rows"):
         return out + ["No optimiser results yet. Produce them with `uv run crew-eval optimiser` "
-                      "(50 seeded scenarios x 3 methods, about 15-20 minutes on a laptop), then "
+                      "(seeded scenarios x 3 methods, roughly 25 minutes on a laptop), then "
                       "`uv run crew-eval report`.", ""]
     c, s = data["config"], data["summary"]
     n_sc = len({r["scenario"] for r in data["rows"]})
     out += [f"{n_sc} seeded disruption scenarios (seed {c['seed']}, ruleset `{c['ruleset']}`, "
-            f"CP-SAT time limit {c['time_limit']:g} s). Small = 1 disruption, medium = 2-3, "
-            "large = 4-6 (sick pilots, delays of 1-5 h, cancellations). Methods: "
+            f"CP-SAT deterministic time limit {c['time_limit']:g} s). Small = 1 disruption, "
+            "medium = 2-3, large = 4-6 (sick pilots, delays of 1-5 h, cancellations). Methods: "
             + "; ".join(f"**{m}** = {METHOD_LABEL.get(m, m)}" for m in s["methods"]) + ".",
             "",
             "Cells are mean (median). *Changes* = base-roster slots that got a different pilot; "
@@ -74,7 +74,29 @@ def _optimiser(data: dict | None) -> list[str]:
                    "may fly them): " + ", ".join(
                        f"{m} {e['uncrewed_total']} ({e['illegal_seats_total']})"
                        for m, e in s["methods"].items()) + ".")
+    out += _caveats(data["rows"])
     out.append("")
+    return out
+
+
+def _caveats(rows: list[dict]) -> list[str]:
+    """Counts straight from the rows: scratch hitting its time limit, greedy vs CP-SAT trade-off."""
+    out = []
+    scratch = [r for r in rows if r["method"] == "scratch"]
+    if scratch:
+        hit = sum(1 for r in scratch if r["status"] == "FEASIBLE")
+        out.append(f"- Re-solving from scratch hit its time limit (status FEASIBLE, not proven "
+                   f"optimal) in {hit}/{len(scratch)} runs, so its numbers are of the best "
+                   "solution found in time.")
+    by = {(r["scenario"], r["method"]): r for r in rows}
+    more = [(by[sc, "cpsat"], by[sc, "greedy"]) for sc, m in by
+            if m == "cpsat" and (sc, "greedy") in by
+            and by[sc, "cpsat"]["uncrewed"] < by[sc, "greedy"]["uncrewed"]]
+    if more:
+        fewer = sum(1 for c, g in more if g["changes"] < c["changes"])
+        out.append(f"- In the {len(more)} scenarios where CP-SAT crewed more seats than greedy, "
+                   f"greedy made fewer changes than CP-SAT in {fewer}: it changes less partly "
+                   "because it leaves seats empty.")
     return out
 
 
@@ -91,23 +113,30 @@ def _sizing(data: dict | None) -> list[str]:
             return "infeasible"
         return f"{r['pilots_needed'].get('CPT', 0)} / {r['pilots_needed'].get('FO', 0)}"
 
+    def duties(r: dict | None) -> str:
+        return "-" if not r else str(r["duties"])
+
     def status(r: dict | None) -> str:
         if not r or not r["feasible"]:
             return "-"
         return "proven" if r["proven_optimal"] else "upper bound"
 
     out += ["Fewest captains / first officers per base that still crew every duty "
-            "(CP-SAT, 15 s per solve). *Proven* = optimal; *upper bound* = a roster with that "
-            "many pilots exists, fewer might also work.", "",
+            "(CP-SAT, deterministic time limit per solve). *Proven* = optimal; *upper bound* = a "
+            "roster with that many pilots exists, fewer might also work. Duties are shown per "
+            "ruleset: the exemption allows longer night duties, so the duty builder makes "
+            "fewer, longer BOM duties, and part of the lower BOM pilot count comes from that "
+            "rather than from the rules alone.", "",
             "| Base | Current rules CPT / FO | Exemption CPT / FO | On the roster CPT / FO "
-            "| Duties | Status (current / exemption) |",
+            "| Duties (current / exemption) | Status (current / exemption) |",
             "|---|---|---|---|---|---|"]
     for base in dict.fromkeys(r["base"] for r in sizing):
         cur, ex = by.get((base, "dgca_current")), by.get((base, "dgca_dec2025_exemption"))
         ref = cur or ex
         avail = ref["pilots_available"]
         out.append(f"| {base} | {need(cur)} | {need(ex)} | {avail.get('CPT', 0)} / "
-                   f"{avail.get('FO', 0)} | {ref['duties']} | {status(cur)} / {status(ex)} |")
+                   f"{avail.get('FO', 0)} | {duties(cur)} / {duties(ex)} | "
+                   f"{status(cur)} / {status(ex)} |")
     return out + [""]
 
 
@@ -118,7 +147,10 @@ def _agent(files: list[tuple[str, dict]]) -> list[str]:
                       "`uv run crew-eval agent --model openai/gpt-oss-120b` (and "
                       "`--model openai/gpt-oss-20b`), then `uv run crew-eval report`. "
                       "It uses Groq's free tier and is resumable.", ""]
-    out += ["About 36 questions in 5 categories; every expected answer is computed by the "
+    n_cases = max(d.get("config", {}).get("n_cases") or d["summary"]["all"]["n"]
+                  for _, d in files)
+    n_cats = max(len(d["summary"]["by_category"]) for _, d in files)
+    out += [f"{n_cases} questions in {n_cats} categories; every expected answer is computed by the "
             "service, not written by hand. *Tool* = called the right tool; *args* = with the "
             "right arguments; *numbers* = share of expected numbers present in the answer; "
             "*grounded* = passed the number check (every number came from a tool).", "",
@@ -170,7 +202,8 @@ def build_report(results_dir: Path = RESULTS_DIR) -> str:
             agents.append((d.get("config", {}).get("model", p.stem), d))
     lines = ["# Crew Roster Copilot: results", "",
              "Generated by `uv run crew-eval report` from the JSON files in this folder. "
-             "Everything is seeded and reproducible.", ""]
+             "Scenarios and solver results are seeded and reproducible; timings vary by "
+             "machine.", ""]
     lines += _optimiser(opt) + _sizing(opt) + _agent(agents) + _judge(agents)
     return "\n".join(lines).rstrip() + "\n"
 

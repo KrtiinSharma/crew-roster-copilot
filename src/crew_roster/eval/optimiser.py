@@ -110,10 +110,14 @@ def run_optimiser_eval(n: int = 50, time_limit: float = 10.0,
     config = {"n": n, "seed": seed, "ruleset": ruleset, "time_limit": time_limit,
               "methods": list(methods)}
     old = json.loads(out.read_text(encoding="utf-8")) if out.exists() else {}
-    same = {k: old.get("config", {}).get(k) for k in ("seed", "ruleset", "time_limit")}
-    if old and same != {k: config[k] for k in same}:
-        log(f"{out.name}: config changed ({old.get('config')}), starting afresh")
-        old = {}
+    if old:
+        stored = old.get("config", {})
+        diff = [k for k in config if stored.get(k) != config[k]]
+        if diff:
+            raise SystemExit(
+                f"{out}: stored config differs in {', '.join(diff)} (stored {stored}, "
+                f"requested {config}). Pass a new --out path (CLI: --results-dir) or delete "
+                "the file; results from different configs are never mixed.")
     rows: list[dict] = list(old.get("rows", []))
     done = {(r["scenario"], r["method"]) for r in rows}
     data = {"config": config, "rows": rows, "summary": summarise(rows),

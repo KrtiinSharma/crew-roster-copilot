@@ -97,7 +97,9 @@ def build_dataset(seed: int = 5, per_category: int = 8,
         add("what_if", ruleset="dgca_current", expected_tool="what_if",
             question=f"If {_who(pmap[s.pilot_id])} calls in sick on "
                      f"{_days(s.from_day, s.to_day)}, how many roster changes are needed?",
-            expected_args={}, expected_numbers=[float(res.stats.changes)])
+            expected_args={"sick": [{"pilot_id": s.pilot_id, "from_day": s.from_day,
+                                     "to_day": s.to_day}]},
+            expected_numbers=[float(res.stats.changes)])
 
     # 4. explain: with the sickness applied, why was someone replaced
     while sum(c.category == "explain" for c in cases) < per_category:
