@@ -42,4 +42,9 @@ with gr.Blocks(title="Crew Roster Copilot API") as demo:
 app = gr.mount_gradio_app(api, demo, path="/ui")
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "7860")))
+    # Use the address Hugging Face gives Gradio apps; a fixed 7860 clashed with another process
+    host = os.environ.get("GRADIO_SERVER_NAME", "0.0.0.0")
+    port = int(os.environ.get("GRADIO_SERVER_PORT") or os.environ.get("PORT") or "7860")
+    print(f"Serving on {host}:{port} (GRADIO_SERVER_PORT={os.environ.get('GRADIO_SERVER_PORT')}, "
+          f"PORT={os.environ.get('PORT')})", flush=True)
+    uvicorn.run(app, host=host, port=port)
