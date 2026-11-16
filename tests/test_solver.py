@@ -83,3 +83,8 @@ def test_exemption_roster_is_legal():
     p = build_problem(generate(), load("dgca_dec2025_exemption"))
     res = solve(p, time_limit=10)
     assert check(p, res.roster) == [] and res.uncovered == []
+
+
+def test_tiny_solve_does_not_hit_wall_cap():
+    d = mk_duty("D1", 0, "06:00", 8, ft_hours=6)
+    assert solve(mk_problem([d], PILOTS), time_limit=5).hit_wall_cap is False

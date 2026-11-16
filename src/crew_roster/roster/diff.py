@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from crew_roster.models import ROLES, Frozen, Roster, Violation
 from crew_roster.problem import Problem
-from crew_roster.roster.check import pilot_violations
+from crew_roster.roster.check import duty_violations, pilot_violations
 
 
 class Change(Frozen):
@@ -41,6 +41,9 @@ def _reasons(
                 message=f"reported sick for day {duty.day}",
             )
         ]
+    own = duty_violations(duty, problem.ruleset)
+    if own:  # the duty itself became illegal: that is why nobody can fly it
+        return [v.model_copy(update={"pilot_id": old_pid}) for v in own]
     trial = new
     old_slots = set(old.duties_of(old_pid))
     for slot in new.duties_of(old_pid):  # undo their new assignments, then give the slot back
@@ -71,7 +74,7 @@ def diff(problem: Problem, old: Roster, new: Roster) -> list[Change]:
             reasons = _reasons(problem, old, new, did, role, o) if o else []
             changes.append(
                 Change(
-                    id=f"C{len(changes) + 1}",
+                    id=f"{did}:{role}",
                     duty_id=did,
                     role=role,
                     old_pilot=o,

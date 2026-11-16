@@ -19,6 +19,7 @@ from crew_roster.roster.diff import count_changes
 
 W_UNCOVERED = 10_000_000
 W_CHANGE = 10_000
+WALL_CAP_FACTOR = 6  # wall-clock safety net = this many times time_limit
 
 
 class SolveResult(Frozen):
@@ -29,6 +30,7 @@ class SolveResult(Frozen):
     seconds: float
     changes: int = 0
     pilots_used: dict[str, int] = {}
+    hit_wall_cap: bool = False
 
 
 def solve(
@@ -43,6 +45,7 @@ def solve(
     t0 = time.perf_counter()
     rs, horizon = problem.ruleset, problem.horizon_days
     legal = [d for d in problem.duties if not duty_violations(d, rs)]
+    # Illegal duties (locked or not) stay out of the model and are reported uncovered, not kept.
     illegal = [d.id for d in problem.duties if duty_violations(d, rs)]
     rank_of = {p.id: p.rank for p in problem.pilots}
     m = cp_model.CpModel()
@@ -191,7 +194,8 @@ def solve(
     solver.parameters.interleave_search = workers > 1  # deterministic parallel search
     solver.parameters.random_seed = 0
     solver.parameters.max_deterministic_time = time_limit
-    solver.parameters.max_time_in_seconds = 3 * time_limit  # safety net only
+    wall_cap = WALL_CAP_FACTOR * time_limit  # safety net only; may break determinism if hit
+    solver.parameters.max_time_in_seconds = wall_cap
     status = solver.solve(m)
     if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
         raise RuntimeError(f"roster solver: {solver.status_name(status)}")
@@ -214,4 +218,5 @@ def solve(
         seconds=round(time.perf_counter() - t0, 3),
         changes=count_changes(problem, base, roster) if base is not None else 0,
         pilots_used=dict(used_by_rank),
+        hit_wall_cap=status != cp_model.OPTIMAL and solver.wall_time >= wall_cap - 0.05,
     )

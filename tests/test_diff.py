@@ -40,3 +40,11 @@ def test_sick_pilot_reason_is_sick():
     new = mk_roster({"D1": {"CPT": "C2", "FO": "F1"}})
     [change] = diff(problem, old, new)
     assert rules(change) == {"sick"}
+
+
+def test_change_ids_are_content_based():
+    d1 = mk_duty("D1", 0, "06:00", 8, ft_hours=6)
+    problem = mk_problem([d1], PILOTS)
+    old = mk_roster({"D1": {"CPT": "C1", "FO": "F1"}})
+    new = mk_roster({"D1": {"CPT": "C2", "FO": "F2"}})
+    assert [c.id for c in diff(problem, old, new)] == ["D1:CPT", "D1:FO"]

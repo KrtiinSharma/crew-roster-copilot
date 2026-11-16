@@ -49,3 +49,21 @@ def test_scratch_changes_more_than_minimum_change(problem, base_result):
     scratch = replan(problem, base_result.roster, sick, method="scratch")
     assert check(scratch.problem, scratch.result.roster) == []
     assert scratch.result.changes >= smart.result.changes
+
+
+def test_delay_that_makes_duty_illegal_is_explained_by_its_own_violation(problem, base_result):
+    cands = sorted(
+        (d for d in problem.duties if d.landings == 4 and not d.night and d.day == 3),
+        key=lambda d: -d.release,
+    )
+    for d in cands:
+        minutes = (d.day + 1) * DAY + 30 - d.release
+        if 0 < minutes <= 600:
+            break
+    else:
+        pytest.fail("no suitable duty")
+    first = d.flight_ids[0]
+    out = replan(problem, base_result.roster, [FlightDelay(flight_id=first, minutes=minutes)])
+    assert d.id in out.result.illegal_duties
+    rules = {v.rule for c in out.changes if c.duty_id == d.id for v in c.reasons}
+    assert "night_max_landings" in rules
