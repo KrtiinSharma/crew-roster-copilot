@@ -130,7 +130,7 @@ def _history(rng: random.Random, pid: str, base: str, n_days: int) -> list[Duty]
 
 
 def generate(
-    seed: int = 7, days: int = 7, pilots_per_base: int = 30, history_days: int = 27
+    seed: int = 7, days: int = 7, pilots_per_base: int = 40, history_days: int = 27
 ) -> Airline:
     rng = random.Random(seed)
     flights: dict[str, Flight] = {}

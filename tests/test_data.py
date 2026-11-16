@@ -18,11 +18,11 @@ def test_flights_form_out_and_back_turns(airline):
 
 
 def test_sixty_pilots_split_by_base_and_rank(airline):
-    assert len(airline.pilots) == 60
+    assert len(airline.pilots) == 80
     for base in BASES:
         ranks = [p.rank for p in airline.pilots if p.base == base]
-        assert ranks.count("CPT") == 15 and ranks.count("FO") == 15
-    assert len({p.id for p in airline.pilots}) == 60
+        assert ranks.count("CPT") == 20 and ranks.count("FO") == 20
+    assert len({p.id for p in airline.pilots}) == 80
 
 
 def test_history_is_in_the_past_and_has_weekly_rest(airline):
