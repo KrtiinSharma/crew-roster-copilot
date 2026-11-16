@@ -91,9 +91,10 @@ def pilot_violations(problem: Problem, roster: Roster, pilot_id: str) -> list[Vi
             )
 
     timeline = sorted(problem.history.get(pilot_id, []) + mine, key=lambda d: (d.report, d.id))
+    rostered = {d.id for d in mine}
     for a, b in zip(timeline, timeline[1:], strict=False):
         need, gap = max(rs.min_rest, a.length), b.report - a.release
-        if gap < need:
+        if b.id in rostered and gap < need:
             add("min_rest", b.id, b.day, gap, need, f"rest before duty {b.id}")
 
     for t in range(horizon):

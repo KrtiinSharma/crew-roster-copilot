@@ -102,3 +102,13 @@ def test_leave_and_sick_days():
 def test_rank_must_match_role():
     d = mk_duty("D1", 2, "06:00", 8, ft_hours=6)
     assert "wrong_rank" in rules_of(run([d], pilots=[mk_pilot("F1", rank="FO")], pid="F1"))
+
+
+def test_history_only_short_rest_is_not_reported():
+    # two past duties only 10 h apart; the roster duty itself is well rested
+    hist = {"P1": [mk_duty("H1", -3, "06:00", 10, ft_hours=6),
+                   mk_duty("H2", -2, "02:00", 6, ft_hours=4)]}
+    assert "min_rest" not in rules_of(run(series([2]), history=hist))
+    # but a short rest from the last history duty into the roster is still caught
+    late = {"P1": [mk_duty("H1", -1, "12:00", 10, ft_hours=6)]}  # release day 0 -> 22:00 day -1
+    assert "min_rest" in rules_of(run([mk_duty("D0", 0, "06:00", 8, ft_hours=6)], history=late))
