@@ -88,3 +88,33 @@ def test_exemption_roster_is_legal():
 def test_tiny_solve_does_not_hit_wall_cap():
     d = mk_duty("D1", 0, "06:00", 8, ft_hours=6)
     assert solve(mk_problem([d], PILOTS), time_limit=5).hit_wall_cap is False
+
+
+@pytest.mark.parametrize("name", ["dgca_current", "dgca_dec2025_exemption"])
+def test_shipped_caches_load_without_resolving(name):
+    import warnings
+
+    p = build_problem(generate(), load(name))
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        roster = cache.load_base_roster(p)
+    assert check(p, roster) == []
+    assert all(roster.get(d.id, r) for d in p.duties for r in ("CPT", "FO"))
+
+
+def test_base_roster_rejects_sick_problem(problem):
+    from crew_roster.disrupt import PilotSick, apply
+
+    sick = apply(problem, [PilotSick(pilot_id="DEL-C01", from_day=1, to_day=1)])
+    with pytest.raises(ValueError):
+        cache.load_base_roster(sick)
+
+
+def test_stale_cache_warns_and_solves(tmp_path, monkeypatch):
+    monkeypatch.setattr(cache, "CACHE_DIR", tmp_path)
+    d = mk_duty("D1", 0, "06:00", 8, ft_hours=6)
+    p = mk_problem([d], PILOTS)
+    cache.cache_path(p.ruleset.name).write_text(mk_roster({}).model_dump_json())
+    with pytest.warns(UserWarning, match="missing or stale"):
+        roster = cache.load_base_roster(p, time_limit=5)
+    assert check(p, roster) == []

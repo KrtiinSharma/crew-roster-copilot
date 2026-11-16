@@ -26,12 +26,15 @@ def main(argv: list[str] | None = None) -> int:
         f"{args.ruleset}: {len(problem.duties)} duties, {len(res.uncovered)} uncovered slots, "
         f"{len(violations)} violations, {res.status}, {res.seconds}s, used {res.pilots_used}"
     )
+    if args.save and (res.uncovered or violations):
+        print("refusing to save: roster has uncovered slots or violations")
+        return 1
     if args.save:
         path = cache_path(args.ruleset)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(res.roster.model_dump_json(indent=1), encoding="utf-8")
         print(f"saved {path}")
-    return 0 if not violations else 1
+    return 0 if not violations and not res.uncovered else 1
 
 
 if __name__ == "__main__":

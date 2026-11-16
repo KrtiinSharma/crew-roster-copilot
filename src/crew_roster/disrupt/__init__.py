@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Annotated, Literal
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from crew_roster.duties import make_duty
 from crew_roster.models import DAY, Frozen
@@ -15,8 +15,14 @@ from crew_roster.problem import Problem
 class PilotSick(Frozen):
     kind: Literal["sick"] = "sick"
     pilot_id: str
-    from_day: int
-    to_day: int
+    from_day: int = Field(ge=0)
+    to_day: int = Field(ge=0)
+
+    @model_validator(mode="after")
+    def _ordered(self) -> PilotSick:
+        if self.to_day < self.from_day:
+            raise ValueError("to_day must be >= from_day")
+        return self
 
 
 class FlightDelay(Frozen):
@@ -60,8 +66,8 @@ def apply(problem: Problem, disruptions: Sequence[Disruption]) -> Problem:
         if isinstance(dis, PilotSick):
             if dis.pilot_id not in pilot_ids:
                 raise ValueError(f"unknown pilot {dis.pilot_id}")
-            if dis.to_day < dis.from_day:
-                raise ValueError("to_day must be >= from_day")
+            if dis.to_day >= problem.horizon_days:
+                raise ValueError(f"to_day {dis.to_day} is beyond the horizon")
             days = frozenset(range(dis.from_day, dis.to_day + 1))
             sick[dis.pilot_id] = sick.get(dis.pilot_id, frozenset()) | days
             continue
@@ -75,8 +81,13 @@ def apply(problem: Problem, disruptions: Sequence[Disruption]) -> Problem:
                 g = flights[fid]
                 if g.dep >= f.dep:
                     flights[fid] = g.model_copy(
-                        update={"dep": g.dep + dis.minutes, "arr": g.arr + dis.minutes}
+                        update={
+                            "dep": g.dep + dis.minutes,
+                            "arr": g.arr + dis.minutes,
+                            "day": (g.dep + dis.minutes) // DAY,
+                        }
                     )
+            # duty ids are stable labels, not day-authoritative: duty.day is authoritative
             duties[did] = make_duty(did, duty.base, [turns[t] for t in duty.turn_ids], flights, rs)
         else:
             turn = turns.pop(f.turn_id)

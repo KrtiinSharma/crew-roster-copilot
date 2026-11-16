@@ -30,8 +30,9 @@ def test_late_delay_is_repaired_legally(problem, base_result):
     out = replan(problem, base_result.roster, [FlightDelay(flight_id="SK115-D2", minutes=240)])
     assert check(out.problem, out.result.roster) == []
     assert out.result.uncovered == []
-    for c in out.changes:
-        assert c.reasons, c
+    # the 4 h delay is absorbed by the existing crew: nothing needs to change
+    assert out.changes == []
+    assert out.result.changes == 0
 
 
 def test_cancellation_needs_no_changes(problem, base_result):

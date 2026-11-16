@@ -17,7 +17,7 @@ def test_flights_form_out_and_back_turns(airline):
         assert back.dep - out.arr == GROUND_MIN
 
 
-def test_sixty_pilots_split_by_base_and_rank(airline):
+def test_eighty_pilots_split_by_base_and_rank(airline):
     assert len(airline.pilots) == 80
     for base in BASES:
         ranks = [p.rank for p in airline.pilots if p.base == base]

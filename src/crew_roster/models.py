@@ -60,7 +60,7 @@ class Pilot(Frozen):
 
 
 class Duty(Frozen):
-    id: str
+    id: str  # stable label, not day-authoritative: .day (from report) is authoritative
     base: str
     report: int
     release: int

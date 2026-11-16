@@ -47,3 +47,22 @@ def test_unknown_ids_are_rejected(problem):
         apply(problem, [PilotSick(pilot_id="NOPE", from_day=1, to_day=1)])
     with pytest.raises(ValueError):
         apply(problem, [FlightCancel(flight_id="SK999-D1")])
+
+
+def test_sick_input_is_validated(problem):
+    from pydantic import ValidationError
+
+    with pytest.raises(ValidationError):
+        PilotSick(pilot_id="DEL-C01", from_day=-1, to_day=2)
+    with pytest.raises(ValidationError):
+        PilotSick(pilot_id="DEL-C01", from_day=3, to_day=2)
+    with pytest.raises(ValueError):
+        apply(problem, [PilotSick(pilot_id="DEL-C01", from_day=3, to_day=problem.horizon_days)])
+
+
+def test_delay_across_midnight_updates_flight_day(problem):
+    d = next(d for d in problem.duties if d.day == 2 and d.release > 2 * DAY + 20 * 60)
+    fid = d.flight_ids[-1]
+    out = apply(problem, [FlightDelay(flight_id=fid, minutes=600)])
+    f = out.flights[fid]
+    assert f.day == f.dep // DAY and f.day != problem.flights[fid].day
