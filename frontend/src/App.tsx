@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { replan, type Disruption, type Ruleset, type ScenarioView } from './api'
+import { replan, type Disruption, type FlightView, type Ruleset, type ScenarioView } from './api'
 import AboutView from './components/AboutView'
 import ChangesList from './components/ChangesList'
 import ChatPanel from './components/ChatPanel'
@@ -15,6 +15,8 @@ export default function App() {
   const [ruleset, setRuleset] = useState<Ruleset>('dgca_current')
   const [disruptions, setDisruptions] = useState<Disruption[]>([])
   const [view, setView] = useState<ScenarioView | null>(null)
+  // Every scheduled flight (a re-planned view omits cancelled ones), to label disruption chips.
+  const [allFlights, setAllFlights] = useState<FlightView[]>([])
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedDutyId, setSelectedDutyId] = useState<string | null>(null)
@@ -35,6 +37,7 @@ export default function App() {
       const v = await replan(nextRuleset, next)
       if (id !== latest.current) return
       setView(v)
+      setAllFlights((all) => (all.length > 0 ? all : v.flights))
       setRuleset(nextRuleset)
       setDisruptions(next)
     } catch (e) {
@@ -47,6 +50,15 @@ export default function App() {
   useEffect(() => {
     void plan('dgca_current', [])
   }, [plan])
+
+  function apply(d: Disruption) {
+    const key = JSON.stringify(d)
+    if (disruptions.some((x) => JSON.stringify(x) === key)) {
+      setError('That disruption is already applied.')
+      return
+    }
+    void plan(ruleset, [...disruptions, d])
+  }
 
   function reset() {
     chatGenerationRef.current += 1
@@ -85,9 +97,10 @@ export default function App() {
               <DisruptionPanel
                 pilots={view.pilots}
                 flights={view.flights}
+                allFlights={allFlights}
                 disruptions={disruptions}
                 busy={busy}
-                onApply={(d) => plan(ruleset, [...disruptions, d])}
+                onApply={apply}
                 onRemove={(i) => plan(ruleset, disruptions.filter((_, j) => j !== i))}
               />
               <StatsBar stats={view.stats} busy={busy} />

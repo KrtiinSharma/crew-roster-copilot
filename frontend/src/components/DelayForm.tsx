@@ -20,7 +20,9 @@ export default function DelayForm({ flights, disabled, onApply }: Props) {
 
   function submit(e: FormEvent) {
     e.preventDefault()
-    if (selected && valid) onApply({ kind: 'delay', flight_id: selected, minutes })
+    if (!selected || !valid) return
+    setFlightId(selected) // keep the choice even if a re-plan reorders the list
+    onApply({ kind: 'delay', flight_id: selected, minutes })
   }
 
   return (

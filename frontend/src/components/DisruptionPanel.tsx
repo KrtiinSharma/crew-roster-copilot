@@ -7,15 +7,16 @@ import SickForm from './SickForm'
 interface Props {
   pilots: PilotView[]
   flights: FlightView[]
+  allFlights: FlightView[]
   disruptions: Disruption[]
   busy: boolean
   onApply: (d: Disruption) => void
   onRemove: (index: number) => void
 }
 
-export default function DisruptionPanel({ pilots, flights, disruptions, busy, onApply, onRemove }: Props) {
+export default function DisruptionPanel({ pilots, flights, allFlights, disruptions, busy, onApply, onRemove }: Props) {
   const pilotMap = new Map(pilots.map((p) => [p.id, p]))
-  const flightMap = new Map(flights.map((f) => [f.id, f]))
+  const flightMap = new Map(allFlights.map((f) => [f.id, f]))
   const full = disruptions.length >= MAX_DISRUPTIONS
   const disabled = busy || full
 

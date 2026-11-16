@@ -18,7 +18,9 @@ export default function CancelForm({ flights, disabled, onApply }: Props) {
 
   function submit(e: FormEvent) {
     e.preventDefault()
-    if (selected) onApply({ kind: 'cancel', flight_id: selected })
+    if (!selected) return
+    setFlightId(selected)
+    onApply({ kind: 'cancel', flight_id: selected })
   }
 
   return (
