@@ -2,6 +2,8 @@ from fakes import ScriptedChatModel, tool_call
 from langchain_core.messages import AIMessage
 
 from crew_roster.agent.graph import ChatTurn, run_agent
+from crew_roster.agent.numbers import extract
+from crew_roster.agent.prompts import SYSTEM_PROMPT
 from crew_roster.service import evaluate, hours, pilot_status
 
 
@@ -18,7 +20,7 @@ def test_answer_grounded_in_a_tool_call_is_verified():
     used = ft7_used_hours()
     model = ScriptedChatModel(script=[
         tool_call("pilot_status", {"pilot_id": "DEL-C01", "day": 3}),
-        AIMessage(content=f"DEL-C01 has flown {used} hours in the 7 days to day 3."),
+        AIMessage(content=f"DEL-C01 has flown {used} hours in the seven days to day 3."),
     ])
     ans = run_agent("How much has DEL-C01 flown by day 3?", [], "dgca_current", [],
                     llm_factory=factory_for(model))
@@ -53,3 +55,34 @@ def test_answer_without_numbers_is_verified():
     ans = run_agent("Is the roster legal?", [], "dgca_current", [],
                     llm_factory=factory_for(model))
     assert ans.verified and ans.tool_calls == []
+
+
+def test_system_prompt_grounds_no_numbers_except_years():
+    assert {v for _, v in extract(SYSTEM_PROMPT)} <= {2025.0}
+
+
+def test_prompt_numbers_do_not_ground_an_answer():
+    reply = "You need 6 more pilots, about 120 hours."
+    model = ScriptedChatModel(script=[AIMessage(content=reply)])
+    ans = run_agent("How many pilots?", [], "dgca_current", [], llm_factory=factory_for(model))
+    assert not ans.verified and ans.ungrounded == ["6", "120"]
+
+
+def test_feedback_does_not_reset_the_turn():
+    used = ft7_used_hours()
+    model = ScriptedChatModel(script=[
+        tool_call("pilot_status", {"pilot_id": "DEL-C01", "day": 3}),
+        AIMessage(content="About 99.9 hours."),
+        AIMessage(content=f"{used} hours flown."),
+    ])
+    ans = run_agent("Hours for DEL-C01 on day 3?", [], "dgca_current", [],
+                    llm_factory=factory_for(model))
+    assert ans.verified and model.calls == 3
+
+
+def test_numbers_from_earlier_turns_do_not_ground_a_new_answer():
+    model = ScriptedChatModel(script=[AIMessage(content="Still 12.5 hours.")])
+    history = [ChatTurn(role="user", content="hours?"),
+               ChatTurn(role="assistant", content="12.5 hours")]
+    ans = run_agent("and now?", history, "dgca_current", [], llm_factory=factory_for(model))
+    assert not ans.verified
