@@ -39,10 +39,11 @@ with gr.Blocks(title="Crew Roster Copilot API") as demo:
         "All airline, flight and pilot data is synthetic."
     )
 
-app = gr.mount_gradio_app(api, demo, path="/ui")
+# ssr_mode=False: on Spaces Gradio otherwise starts a Node server, which takes port 7860 first
+app = gr.mount_gradio_app(api, demo, path="/ui", ssr_mode=False)
 
 if __name__ == "__main__":
-    # Use the address Hugging Face gives Gradio apps; a fixed 7860 clashed with another process
+    # Same address variables as gradio.launch(); Spaces route traffic to 7860
     host = os.environ.get("GRADIO_SERVER_NAME", "0.0.0.0")
     port = int(os.environ.get("GRADIO_SERVER_PORT") or os.environ.get("PORT") or "7860")
     print(f"Serving on {host}:{port} (GRADIO_SERVER_PORT={os.environ.get('GRADIO_SERVER_PORT')}, "
