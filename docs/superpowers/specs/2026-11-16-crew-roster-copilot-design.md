@@ -47,14 +47,15 @@ explanations all go through it. Reasons given to users come from checker output,
 
 | Function | Returns |
 |---|---|
-| `data.generate(seed) -> Airline` | airports, flights (7 days), pilots with 21-day history |
+| `data.generate(seed) -> Airline` | airports, flights + turns (7 days), pilots with 27-day history |
 | `rules.load(name) -> Ruleset` | `"dgca_current"` or `"dgca_dec2025_exemption"` |
-| `duties.build(flights, ruleset) -> list[Duty]` | every flight in exactly one duty |
-| `roster.solve(duties, pilots, ruleset, base=None, locked_before=None, time_limit=10) -> SolveResult` | roster, uncovered duties, stats |
-| `roster.check(roster, duties, pilots, ruleset) -> list[Violation]` | empty list = legal |
-| `roster.diff(old, new, ...) -> list[Change]` | each change with checker reason codes |
+| `duties.build(turns, flights, ruleset) -> list[Duty]` | every flight in exactly one duty |
+| `problem.build_problem(airline, ruleset) -> Problem` | duties + pilots + history + ruleset |
+| `roster.solve(problem, base=None, locked_before=None, time_limit=10) -> SolveResult` | roster, uncovered slots, stats |
+| `roster.check(problem, roster) -> list[Violation]` | empty list = legal |
+| `roster.diff(problem, old, new) -> list[Change]` | each change with checker reason codes |
 | `disrupt.apply(problem, disruptions) -> Problem` | modified copy; never mutates input |
-| `roster.greedy_repair(problem, base) -> SolveResult` | baseline |
+| `roster.greedy_repair(problem, base, locked_before) -> SolveResult` | baseline |
 
 ## 3. Data: "Skyline Air"
 
@@ -62,8 +63,8 @@ explanations all go through it. Reasons given to users come from checker output,
   realistic and fixed in a table (e.g. DEL–BOM 2h10).
 - ~40 flights/day × 7 days, published as rotations out of each base, so out-and-back duties exist.
   Includes a few departures in 00:00–06:00 so the night rules matter.
-- 60 A320 pilots: 30 per base, about half captains (CPT) and half first officers (FO). Each pilot has a
-  21-day synthetic history (flight hours, duty hours, end time of last duty, consecutive nights,
+- 60 A320 pilots: 30 per base, half captains (CPT) and half first officers (FO). Each pilot has a
+  27-day synthetic history (flight hours, duty hours, end time of last duty, consecutive nights,
   last 48h rest) so 7-day and 28-day rolling limits matter from day 1, plus a few pre-booked leave days.
 - Generated from a fixed seed, so it is identical on every run.
 
