@@ -22,16 +22,25 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
 export default function DutyCard({ duty, flights, pilots, changes, onClose }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null)
 
+  // Remember the cell that opened the card and give focus back to it on close.
+  useEffect(() => {
+    const opener = document.activeElement as HTMLElement | null
+    return () => {
+      if (opener && opener.isConnected) opener.focus()
+    }
+  }, [])
+
   useEffect(() => {
     closeRef.current?.focus()
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [duty.id, onClose])
+  }, [duty.id])
 
   return (
     <aside
       role="dialog"
+      aria-modal="true"
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') onClose()
+      }}
       aria-labelledby="duty-card-heading"
       className="fixed inset-x-0 bottom-0 z-40 max-h-[80vh] overflow-y-auto rounded-t-xl border border-slate-200 bg-white p-4 shadow-2xl sm:inset-x-auto sm:top-4 sm:right-4 sm:bottom-auto sm:w-96 sm:rounded-xl"
     >
@@ -54,7 +63,7 @@ export default function DutyCard({ duty, flights, pilots, changes, onClose }: Pr
       </div>
 
       <div className="mt-2 flex flex-wrap gap-1.5 text-xs">
-        {duty.night && <span className="rounded bg-indigo-50 px-1.5 py-0.5 text-indigo-800">🌙 Night duty</span>}
+        {duty.night && <span className="rounded bg-sky-50 px-1.5 py-0.5 text-sky-800">🌙 Night duty</span>}
         {duty.legal ? (
           <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-emerald-800">Within the rules ✓</span>
         ) : (

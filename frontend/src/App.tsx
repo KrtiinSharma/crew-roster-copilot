@@ -23,6 +23,7 @@ export default function App() {
   const [chatLog, setChatLog] = useState<ChatEntry[]>([])
   const [showAbout, setShowAbout] = useState(false)
   const latest = useRef(0)
+  const lastPlan = useRef<{ ruleset: Ruleset; disruptions: Disruption[] }>({ ruleset: 'dgca_current', disruptions: [] })
   // Bumped by Reset, so a chat answer that arrives afterwards is discarded.
   const [chatGeneration, setChatGeneration] = useState(0)
   const chatGenerationRef = useRef(0)
@@ -31,6 +32,7 @@ export default function App() {
   // rejected disruption (e.g. 422) is dropped and the previous view stays on screen.
   const plan = useCallback(async (nextRuleset: Ruleset, next: Disruption[]) => {
     const id = ++latest.current
+    lastPlan.current = { ruleset: nextRuleset, disruptions: next }
     setBusy(true)
     setError(null)
     try {
@@ -88,12 +90,21 @@ export default function App() {
         {error && (
           <p role="alert" className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
             {error}
+            {!busy && (
+              <button
+                type="button"
+                onClick={() => void plan(lastPlan.current.ruleset, lastPlan.current.disruptions)}
+                className="ml-3 rounded-md border border-red-300 bg-white px-2 py-0.5 text-xs font-medium text-red-800 hover:bg-red-100 focus-visible:outline-2 focus-visible:outline-red-700"
+              >
+                Retry
+              </button>
+            )}
           </p>
         )}
         {!view && !error && <Spinner label="Loading roster…" />}
         {view && (
           <div className="grid gap-4 lg:grid-cols-[minmax(20rem,26rem)_minmax(0,1fr)]">
-            <div className="min-w-0 space-y-4">
+            <div className="order-2 min-w-0 space-y-4 lg:order-none">
               <DisruptionPanel
                 pilots={view.pilots}
                 flights={view.flights}
@@ -109,13 +120,14 @@ export default function App() {
                 key={chatGeneration}
                 ruleset={ruleset}
                 disruptions={disruptions}
+                busy={busy}
                 entries={chatLog}
                 onEntries={(entries) => {
                   if (chatGeneration === chatGenerationRef.current) setChatLog(entries)
                 }}
               />
             </div>
-            <div className="min-w-0 lg:sticky lg:top-4 lg:self-start">
+            <div className="order-1 min-w-0 lg:order-none lg:sticky lg:top-4 lg:self-start">
               <RosterGrid view={view} selectedDutyId={selectedDutyId} onSelect={setSelectedDutyId} />
             </div>
           </div>

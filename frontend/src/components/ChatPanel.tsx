@@ -21,6 +21,7 @@ const EXAMPLES = [
 interface Props {
   ruleset: Ruleset
   disruptions: Disruption[]
+  busy: boolean
   entries: ChatEntry[]
   onEntries: (entries: ChatEntry[]) => void
 }
@@ -30,10 +31,13 @@ function errorText(e: unknown): string {
   return e instanceof Error ? e.message : 'Something went wrong.'
 }
 
-export default function ChatPanel({ ruleset, disruptions, entries, onEntries }: Props) {
+export default function ChatPanel({ ruleset, disruptions, busy, entries, onEntries }: Props) {
   const [draft, setDraft] = useState('')
   const [pending, setPending] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const scenarioKey = JSON.stringify([ruleset, disruptions])
+  const scenarioRef = useRef(scenarioKey)
+  scenarioRef.current = scenarioKey
   const listRef = useRef<HTMLOListElement>(null)
 
   useEffect(() => {
@@ -48,13 +52,15 @@ export default function ChatPanel({ ruleset, disruptions, entries, onEntries }: 
     setDraft('')
     setError(null)
     setPending(true)
+    const askedFor = scenarioKey
     // The API accepts a bounded history; send the most recent turns only.
-    const turns: ChatTurn[] = withQuestion
-      .slice(-MAX_CHAT_MESSAGES)
-      .map(({ role, content }) => ({ role, content: content.slice(0, MAX_MESSAGE_CHARS) }))
+    // At most MAX_CHAT_MESSAGES - 1 previous turns plus the new question, starting on a user turn.
+    let recent = withQuestion.slice(-MAX_CHAT_MESSAGES)
+    while (recent.length > 1 && recent[0].role !== 'user') recent = recent.slice(1)
+    const turns: ChatTurn[] = recent.map(({ role, content }) => ({ role, content: content.slice(0, MAX_MESSAGE_CHARS) }))
     try {
       const answer = await chat(ruleset, disruptions, turns)
-      onEntries([...withQuestion, { role: 'assistant', content: answer.answer, answer }])
+      onEntries([...withQuestion, { role: 'assistant', content: answer.answer, answer, stale: askedFor !== scenarioRef.current }])
     } catch (e) {
       // Drop the unanswered question from the history and give it back for editing.
       onEntries(entries)
@@ -126,7 +132,7 @@ export default function ChatPanel({ ruleset, disruptions, entries, onEntries }: 
           placeholder="Ask about the roster…"
           className="min-w-0 flex-1 rounded-md border border-slate-300 px-3 py-1.5 text-sm focus-visible:outline-2 focus-visible:outline-sky-700"
         />
-        <button type="submit" className={submitClass} disabled={pending || !draft.trim()}>
+        <button type="submit" className={submitClass} disabled={pending || busy || !draft.trim()}>
           Ask
         </button>
       </form>

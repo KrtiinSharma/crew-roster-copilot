@@ -6,9 +6,18 @@ export interface ChatEntry {
   role: 'user' | 'assistant'
   content: string
   answer?: AgentAnswer
+  /** The scenario changed while this answer was being produced. */
+  stale?: boolean
 }
 
-function VerifiedBadge({ answer }: { answer: AgentAnswer }) {
+function VerifiedBadge({ answer, stale }: { answer: AgentAnswer; stale?: boolean }) {
+  if (stale) {
+    return (
+      <span className="rounded bg-amber-50 px-1.5 py-0.5 text-[11px] font-medium text-amber-900 ring-1 ring-amber-300">
+        answered for an earlier scenario
+      </span>
+    )
+  }
   if (answer.verified) {
     return (
       <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-[11px] font-medium text-emerald-800 ring-1 ring-emerald-200">
@@ -62,7 +71,7 @@ export default function ChatMessage({ entry }: { entry: ChatEntry }) {
       </div>
       {entry.answer && (
         <div className="flex flex-wrap items-start gap-3">
-          <VerifiedBadge answer={entry.answer} />
+          <VerifiedBadge answer={entry.answer} stale={entry.stale} />
           <ToolsUsed answer={entry.answer} />
         </div>
       )}
