@@ -1,7 +1,12 @@
 // Backend base URL: "/api" in dev (Vite proxies and strips it), the Cloud Run URL in production.
 export const API_URL = (import.meta.env.VITE_API_URL ?? '/api').replace(/\/$/, '')
 
-export type Ruleset = 'dgca_current' | 'dgca_dec2025_exemption'
+// Request limits enforced by the backend; the UI stays inside them.
+export const MAX_DISRUPTIONS = 30
+export const MAX_CHAT_MESSAGES = 20
+export const MAX_MESSAGE_CHARS = 2000
+
+export type Ruleset ='dgca_current' | 'dgca_dec2025_exemption'
 
 export type Disruption =
   | { kind: 'sick'; pilot_id: string; from_day: number; to_day: number }

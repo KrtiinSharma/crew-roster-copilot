@@ -1,4 +1,4 @@
-import type { PilotView } from '../api'
+import type { Disruption, FlightView, PilotView } from '../api'
 
 export const DAYS = [0, 1, 2, 3, 4, 5, 6] as const
 
@@ -36,4 +36,32 @@ export function pilotName(pilots: Map<string, PilotView>, id: string | null): st
 
 export function seatLabel(role: 'CPT' | 'FO'): string {
   return role === 'CPT' ? 'Captain' : 'First officer'
+}
+
+/** One-line description of a disruption, e.g. "Capt. A. Rao sick, Day 1–2". */
+export function describeDisruption(
+  d: Disruption,
+  pilots: Map<string, PilotView>,
+  flights: Map<string, FlightView>,
+): string {
+  const route = (id: string) => {
+    const f = flights.get(id)
+    return f ? ` ${f.origin}→${f.dest}` : ''
+  }
+  switch (d.kind) {
+    case 'sick': {
+      const days =
+        d.from_day === d.to_day ? dayLabel(d.from_day) : `${dayLabel(d.from_day)}–${d.to_day}`
+      return `${pilotName(pilots, d.pilot_id)} sick, ${days}`
+    }
+    case 'delay':
+      return `${d.flight_id}${route(d.flight_id)} delayed ${d.minutes} min`
+    case 'cancel':
+      return `${d.flight_id}${route(d.flight_id)} cancelled`
+  }
+}
+
+/** "SK101-D0 · DEL→BOM · 06:00" for flight pickers. */
+export function flightOption(f: FlightView): string {
+  return `${f.id} · ${f.origin}→${f.dest} · ${clock(f.dep)}`
 }
