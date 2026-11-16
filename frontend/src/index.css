@@ -12,3 +12,12 @@
 body {
   @apply bg-slate-50 text-slate-900 antialiased;
 }
+
+/* Sick days in the roster grid: red diagonal stripes. */
+.sick-stripes {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--color-red-100) 0 6px,
+    var(--color-red-50) 6px 12px
+  );
+}
