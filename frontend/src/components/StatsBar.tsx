@@ -19,7 +19,7 @@ function Tile({ label, value, tone = 'plain' }: { label: string; value: string; 
 export default function StatsBar({ stats, busy }: Props) {
   return (
     <section aria-label="Roster numbers" aria-busy={busy}>
-      <dl className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <dl className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2">
         <Tile label="Duties" value={String(stats.duties)} />
         <Tile label="Crewed seats" value={`${stats.crewed}/${stats.slots}`} />
         <Tile label="Uncrewed" value={String(stats.uncovered)} tone={stats.uncovered > 0 ? 'bad' : 'plain'} />

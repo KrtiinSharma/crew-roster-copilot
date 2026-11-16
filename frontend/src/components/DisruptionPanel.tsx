@@ -28,7 +28,7 @@ export default function DisruptionPanel({ pilots, flights, disruptions, busy, on
         Each change re-plans the week, keeping as much of the original roster as the rules allow.
       </p>
 
-      <div className="mt-3 grid gap-4 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+      <div className="mt-3 grid gap-4 md:grid-cols-3 lg:grid-cols-1">
         <SickForm pilots={pilots} disabled={disabled} onApply={onApply} />
         <DelayForm flights={flights} disabled={disabled} onApply={onApply} />
         <CancelForm flights={flights} disabled={disabled} onApply={onApply} />
