@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from crew_roster.models import Duty, Roster, Violation
+from crew_roster.models import Duty, Frozen, Roster, Violation
 from crew_roster.problem import Problem
 from crew_roster.rules import Ruleset
 
@@ -12,6 +12,44 @@ WINDOWS = (
     ("duty_7d", 7, "length"),
     ("duty_28d", 28, "length"),
 )
+
+
+class Usage(Frozen):
+    """Minutes used in the rolling window ending on a day, against the limit."""
+
+    rule: str
+    used: int
+    limit: int
+    remaining: int
+
+
+def pilot_timeline(problem: Problem, roster: Roster, pilot_id: str) -> list[Duty]:
+    """The pilot's fixed history plus their rostered duties, in report order."""
+    duties = problem.duty_map()
+    mine = [duties[d] for d, _ in roster.duties_of(pilot_id) if d in duties]
+    return sorted(problem.history.get(pilot_id, []) + mine, key=lambda d: (d.report, d.id))
+
+
+def window_totals(timeline: list[Duty], t: int) -> dict[str, int]:
+    """Rolling flight / duty minutes for the windows ending on day t (history included)."""
+    return {
+        rule: sum(getattr(d, attr) for d in timeline if t - span + 1 <= d.day <= t)
+        for rule, span, attr in WINDOWS
+    }
+
+
+def pilot_usage(problem: Problem, roster: Roster, pilot_id: str, day: int) -> list[Usage]:
+    rs = problem.ruleset
+    totals = window_totals(pilot_timeline(problem, roster, pilot_id), day)
+    return [
+        Usage(
+            rule=rule,
+            used=used,
+            limit=getattr(rs, rule),
+            remaining=max(getattr(rs, rule) - used, 0),
+        )
+        for rule, used in totals.items()
+    ]
 
 
 def duty_violations(duty: Duty, rs: Ruleset) -> list[Violation]:
@@ -90,20 +128,19 @@ def pilot_violations(problem: Problem, roster: Roster, pilot_id: str) -> list[Vi
                 message=f"not available on day {d.day}",
             )
 
-    timeline = sorted(problem.history.get(pilot_id, []) + mine, key=lambda d: (d.report, d.id))
+    timeline = pilot_timeline(problem, roster, pilot_id)
     rostered = {d.id for d in mine}
     for a, b in zip(timeline, timeline[1:], strict=False):
         need, gap = max(rs.min_rest, a.length), b.report - a.release
         if b.id in rostered and gap < need:
             add("min_rest", b.id, b.day, gap, need, f"rest before duty {b.id}")
 
+    spans = {rule: span for rule, span, _ in WINDOWS}
     for t in range(horizon):
-        for rule, span, attr in WINDOWS:
-            lo = t - span + 1
-            total = sum(getattr(d, attr) for d in timeline if lo <= d.day <= t)
+        for rule, total in window_totals(timeline, t).items():
             limit = getattr(rs, rule)
             if total > limit:
-                add(rule, None, t, total, limit, f"{span}-day total ending day {t}")
+                add(rule, None, t, total, limit, f"{spans[rule]}-day total ending day {t}")
 
     busy = {k for d in timeline for k in d.touched_days()}
     for t in range(horizon):
