@@ -55,8 +55,12 @@ if __name__ == "__main__":
     port = int(os.environ.get("GRADIO_SERVER_PORT") or os.environ.get("PORT") or "7860")
     print(f"Serving on {host}:{port} (GRADIO_SERVER_PORT={os.environ.get('GRADIO_SERVER_PORT')}, "
           f"PORT={os.environ.get('PORT')})", flush=True)
-    from spaces.zero import zerogpu_mode_enabled
-    print(f"ZeroGPU: SPACES_ZERO_GPU={os.environ.get('SPACES_ZERO_GPU')}, "
-          f"mode={zerogpu_mode_enabled()}, gpu_check wrapped={hasattr(gpu_check, 'zerogpu')}, "
-          f"middleware={[m.cls.__name__ for m in app.user_middleware]}", flush=True)
+    from importlib.metadata import version
+
+    import spaces.zero as zero
+    print(f"ZeroGPU: spaces={version('spaces')} gradio={version('gradio')} "
+          f"SPACES_ZERO_GPU={os.environ.get('SPACES_ZERO_GPU')}, "
+          f"gpu_check type={type(gpu_check).__name__} wrapped={hasattr(gpu_check, 'zerogpu')}, "
+          f"middleware={[m.cls.__name__ for m in app.user_middleware]}, "
+          f"spaces.zero names={sorted(n for n in dir(zero) if not n.startswith('__'))}", flush=True)
     uvicorn.run(app, host=host, port=port)
