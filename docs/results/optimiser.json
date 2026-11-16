@@ -1,0 +1,2096 @@
+{
+ "config": {
+  "n": 50,
+  "seed": 11,
+  "ruleset": "dgca_current",
+  "time_limit": 10.0,
+  "methods": [
+   "cpsat",
+   "greedy",
+   "scratch"
+  ]
+ },
+ "rows": [
+  {
+   "scenario": "S00",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.094,
+   "wall_seconds": 0.095,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S00",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.022,
+   "wall_seconds": 0.023,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S00",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 9,
+   "breaches": 0,
+   "seconds": 1.048,
+   "wall_seconds": 1.053,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S01",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 4.523,
+   "wall_seconds": 4.524,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S01",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.02,
+   "wall_seconds": 0.021,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S01",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 145,
+   "breaches": 0,
+   "seconds": 7.141,
+   "wall_seconds": 7.23,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S02",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 7,
+   "breaches": 0,
+   "seconds": 6.818,
+   "wall_seconds": 6.82,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S02",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 2,
+   "changes": 5,
+   "breaches": 0,
+   "seconds": 0.032,
+   "wall_seconds": 0.033,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S02",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 196,
+   "breaches": 0,
+   "seconds": 10.413,
+   "wall_seconds": 10.54,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S03",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 3.2,
+   "wall_seconds": 3.2,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S03",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 0.027,
+   "wall_seconds": 0.028,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S03",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 66,
+   "breaches": 0,
+   "seconds": 11.751,
+   "wall_seconds": 11.818,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S04",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 8.198,
+   "wall_seconds": 8.201,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S04",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 0.028,
+   "wall_seconds": 0.028,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S04",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 160,
+   "breaches": 0,
+   "seconds": 12.615,
+   "wall_seconds": 12.836,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S05",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 7.018,
+   "wall_seconds": 7.02,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S05",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.02,
+   "wall_seconds": 0.02,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S05",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 181,
+   "breaches": 0,
+   "seconds": 16.854,
+   "wall_seconds": 16.987,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S06",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 2,
+   "changes": 6,
+   "breaches": 0,
+   "seconds": 9.955,
+   "wall_seconds": 9.957,
+   "status": "OPTIMAL",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S06",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 3,
+   "changes": 5,
+   "breaches": 0,
+   "seconds": 0.031,
+   "wall_seconds": 0.032,
+   "status": "GREEDY",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S06",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 2,
+   "changes": 167,
+   "breaches": 0,
+   "seconds": 12.906,
+   "wall_seconds": 13.193,
+   "status": "FEASIBLE",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S07",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 10.328,
+   "wall_seconds": 10.33,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S07",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 0.024,
+   "wall_seconds": 0.025,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S07",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 162,
+   "breaches": 0,
+   "seconds": 9.311,
+   "wall_seconds": 9.429,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S08",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 4,
+   "breaches": 0,
+   "seconds": 9.555,
+   "wall_seconds": 9.558,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S08",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 1,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 0.032,
+   "wall_seconds": 0.032,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S08",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 190,
+   "breaches": 0,
+   "seconds": 10.416,
+   "wall_seconds": 10.526,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S09",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 3.695,
+   "wall_seconds": 3.697,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S09",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.023,
+   "wall_seconds": 0.024,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S09",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 167,
+   "breaches": 0,
+   "seconds": 8.249,
+   "wall_seconds": 8.345,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S10",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 3.899,
+   "wall_seconds": 3.9,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S10",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 0.021,
+   "wall_seconds": 0.022,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S10",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 183,
+   "breaches": 0,
+   "seconds": 11.174,
+   "wall_seconds": 11.319,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S11",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 1,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 5.103,
+   "wall_seconds": 5.105,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S11",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 1,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 0.026,
+   "wall_seconds": 0.026,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S11",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 1,
+   "changes": 186,
+   "breaches": 0,
+   "seconds": 10.827,
+   "wall_seconds": 11.084,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S12",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 6.224,
+   "wall_seconds": 6.226,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S12",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.021,
+   "wall_seconds": 0.022,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S12",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 177,
+   "breaches": 0,
+   "seconds": 12.347,
+   "wall_seconds": 12.475,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S13",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 2,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 5.125,
+   "wall_seconds": 5.128,
+   "status": "OPTIMAL",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S13",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 2,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 0.049,
+   "wall_seconds": 0.05,
+   "status": "GREEDY",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S13",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 2,
+   "changes": 119,
+   "breaches": 0,
+   "seconds": 7.042,
+   "wall_seconds": 7.111,
+   "status": "FEASIBLE",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S14",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 6.608,
+   "wall_seconds": 6.611,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S14",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 1,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.03,
+   "wall_seconds": 0.031,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S14",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 166,
+   "breaches": 0,
+   "seconds": 11.361,
+   "wall_seconds": 11.519,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S15",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 2,
+   "changes": 4,
+   "breaches": 0,
+   "seconds": 5.509,
+   "wall_seconds": 5.511,
+   "status": "OPTIMAL",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S15",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 2,
+   "changes": 4,
+   "breaches": 0,
+   "seconds": 0.025,
+   "wall_seconds": 0.026,
+   "status": "GREEDY",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S15",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 2,
+   "changes": 190,
+   "breaches": 0,
+   "seconds": 11.257,
+   "wall_seconds": 11.419,
+   "status": "FEASIBLE",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S16",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 2,
+   "changes": 4,
+   "breaches": 0,
+   "seconds": 5.356,
+   "wall_seconds": 5.358,
+   "status": "OPTIMAL",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S16",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 3,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 0.022,
+   "wall_seconds": 0.023,
+   "status": "GREEDY",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S16",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 2,
+   "changes": 199,
+   "breaches": 0,
+   "seconds": 8.946,
+   "wall_seconds": 9.076,
+   "status": "FEASIBLE",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S17",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 1,
+   "changes": 5,
+   "breaches": 0,
+   "seconds": 6.018,
+   "wall_seconds": 6.021,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S17",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 1,
+   "changes": 5,
+   "breaches": 0,
+   "seconds": 0.057,
+   "wall_seconds": 0.058,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S17",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 1,
+   "changes": 190,
+   "breaches": 0,
+   "seconds": 10.615,
+   "wall_seconds": 10.737,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S18",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 4.034,
+   "wall_seconds": 4.036,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S18",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.016,
+   "wall_seconds": 0.016,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S18",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 194,
+   "breaches": 0,
+   "seconds": 9.415,
+   "wall_seconds": 9.537,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S19",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 2.281,
+   "wall_seconds": 2.282,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S19",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.018,
+   "wall_seconds": 0.019,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S19",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 104,
+   "breaches": 0,
+   "seconds": 6.249,
+   "wall_seconds": 6.306,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S20",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 2,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 4.234,
+   "wall_seconds": 4.236,
+   "status": "OPTIMAL",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S20",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 2,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 0.015,
+   "wall_seconds": 0.016,
+   "status": "GREEDY",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S20",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 2,
+   "changes": 196,
+   "breaches": 0,
+   "seconds": 8.88,
+   "wall_seconds": 8.997,
+   "status": "FEASIBLE",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S21",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 4.005,
+   "wall_seconds": 4.007,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S21",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 0.018,
+   "wall_seconds": 0.019,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S21",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 174,
+   "breaches": 0,
+   "seconds": 7.967,
+   "wall_seconds": 8.073,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S22",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 3.322,
+   "wall_seconds": 3.323,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S22",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.017,
+   "wall_seconds": 0.017,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S22",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 167,
+   "breaches": 0,
+   "seconds": 7.988,
+   "wall_seconds": 8.083,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S23",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 4.434,
+   "wall_seconds": 4.435,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S23",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.017,
+   "wall_seconds": 0.018,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S23",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 168,
+   "breaches": 0,
+   "seconds": 7.882,
+   "wall_seconds": 7.98,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S24",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 3.596,
+   "wall_seconds": 3.598,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S24",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.019,
+   "wall_seconds": 0.02,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S24",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 144,
+   "breaches": 0,
+   "seconds": 7.982,
+   "wall_seconds": 8.062,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S25",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.317,
+   "wall_seconds": 0.318,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S25",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.016,
+   "wall_seconds": 0.017,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S25",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 46,
+   "breaches": 0,
+   "seconds": 4.92,
+   "wall_seconds": 4.943,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S26",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 3.762,
+   "wall_seconds": 3.764,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S26",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.02,
+   "wall_seconds": 0.021,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S26",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 136,
+   "breaches": 0,
+   "seconds": 6.962,
+   "wall_seconds": 7.053,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S27",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 4,
+   "breaches": 0,
+   "seconds": 5.053,
+   "wall_seconds": 5.055,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S27",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 4,
+   "breaches": 0,
+   "seconds": 0.019,
+   "wall_seconds": 0.02,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S27",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 189,
+   "breaches": 0,
+   "seconds": 9.34,
+   "wall_seconds": 9.461,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S28",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 2,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 4.12,
+   "wall_seconds": 4.122,
+   "status": "OPTIMAL",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S28",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 2,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 0.017,
+   "wall_seconds": 0.018,
+   "status": "GREEDY",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S28",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 2,
+   "changes": 168,
+   "breaches": 0,
+   "seconds": 7.251,
+   "wall_seconds": 7.349,
+   "status": "FEASIBLE",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S29",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 2,
+   "changes": 6,
+   "breaches": 0,
+   "seconds": 4.835,
+   "wall_seconds": 4.837,
+   "status": "OPTIMAL",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S29",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 3,
+   "changes": 5,
+   "breaches": 0,
+   "seconds": 0.026,
+   "wall_seconds": 0.028,
+   "status": "GREEDY",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S29",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 2,
+   "changes": 192,
+   "breaches": 0,
+   "seconds": 6.997,
+   "wall_seconds": 7.121,
+   "status": "FEASIBLE",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S30",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 1,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 5.764,
+   "wall_seconds": 5.766,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S30",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 1,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 0.025,
+   "wall_seconds": 0.026,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S30",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 1,
+   "changes": 198,
+   "breaches": 0,
+   "seconds": 8.453,
+   "wall_seconds": 8.593,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S31",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 4.279,
+   "wall_seconds": 4.283,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S31",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 1,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.038,
+   "wall_seconds": 0.039,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S31",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 171,
+   "breaches": 0,
+   "seconds": 10.841,
+   "wall_seconds": 11.083,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S32",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 5.398,
+   "wall_seconds": 5.4,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S32",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 0.022,
+   "wall_seconds": 0.023,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S32",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 151,
+   "breaches": 0,
+   "seconds": 9.402,
+   "wall_seconds": 9.53,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S33",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 6.752,
+   "wall_seconds": 6.759,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S33",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 1,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 0.067,
+   "wall_seconds": 0.069,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S33",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 187,
+   "breaches": 0,
+   "seconds": 9.65,
+   "wall_seconds": 9.773,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S34",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 3.894,
+   "wall_seconds": 3.897,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S34",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.027,
+   "wall_seconds": 0.028,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S34",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 84,
+   "breaches": 0,
+   "seconds": 11.364,
+   "wall_seconds": 11.417,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S35",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 2,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 3.531,
+   "wall_seconds": 3.533,
+   "status": "OPTIMAL",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S35",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 2,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 0.019,
+   "wall_seconds": 0.02,
+   "status": "GREEDY",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S35",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 2,
+   "changes": 101,
+   "breaches": 0,
+   "seconds": 5.611,
+   "wall_seconds": 5.682,
+   "status": "FEASIBLE",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S36",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 4,
+   "breaches": 0,
+   "seconds": 5.41,
+   "wall_seconds": 5.412,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S36",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 4,
+   "breaches": 0,
+   "seconds": 0.022,
+   "wall_seconds": 0.023,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S36",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 165,
+   "breaches": 0,
+   "seconds": 10.848,
+   "wall_seconds": 10.953,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S37",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 2.299,
+   "wall_seconds": 2.301,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S37",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.018,
+   "wall_seconds": 0.019,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S37",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 75,
+   "breaches": 0,
+   "seconds": 8.462,
+   "wall_seconds": 8.517,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S38",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 2.075,
+   "wall_seconds": 2.077,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S38",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.018,
+   "wall_seconds": 0.018,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S38",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 73,
+   "breaches": 0,
+   "seconds": 7.594,
+   "wall_seconds": 7.639,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S39",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 5.256,
+   "wall_seconds": 5.258,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S39",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.019,
+   "wall_seconds": 0.02,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S39",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 52,
+   "breaches": 0,
+   "seconds": 7.257,
+   "wall_seconds": 7.301,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S40",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.215,
+   "wall_seconds": 0.216,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S40",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.017,
+   "wall_seconds": 0.017,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S40",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 19,
+   "breaches": 0,
+   "seconds": 3.45,
+   "wall_seconds": 3.462,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S41",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.275,
+   "wall_seconds": 0.276,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S41",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.02,
+   "wall_seconds": 0.02,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S41",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 23,
+   "breaches": 0,
+   "seconds": 3.075,
+   "wall_seconds": 3.087,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S42",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 2,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 3.542,
+   "wall_seconds": 3.543,
+   "status": "OPTIMAL",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S42",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 2,
+   "changes": 3,
+   "breaches": 0,
+   "seconds": 0.018,
+   "wall_seconds": 0.018,
+   "status": "GREEDY",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S42",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 2,
+   "changes": 137,
+   "breaches": 0,
+   "seconds": 7.722,
+   "wall_seconds": 7.798,
+   "status": "FEASIBLE",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S43",
+   "size": "small",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 3.577,
+   "wall_seconds": 3.578,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S43",
+   "size": "small",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 0,
+   "breaches": 0,
+   "seconds": 0.017,
+   "wall_seconds": 0.017,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S43",
+   "size": "small",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 164,
+   "breaches": 0,
+   "seconds": 11.049,
+   "wall_seconds": 11.148,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S44",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 3.878,
+   "wall_seconds": 3.879,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S44",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.022,
+   "wall_seconds": 0.022,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S44",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 132,
+   "breaches": 0,
+   "seconds": 7.297,
+   "wall_seconds": 7.382,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S45",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 2,
+   "changes": 6,
+   "breaches": 0,
+   "seconds": 4.491,
+   "wall_seconds": 4.495,
+   "status": "OPTIMAL",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S45",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 2,
+   "changes": 6,
+   "breaches": 0,
+   "seconds": 0.021,
+   "wall_seconds": 0.022,
+   "status": "GREEDY",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S45",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 2,
+   "changes": 183,
+   "breaches": 0,
+   "seconds": 9.535,
+   "wall_seconds": 9.653,
+   "status": "FEASIBLE",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S46",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 5.312,
+   "wall_seconds": 5.313,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S46",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 0.019,
+   "wall_seconds": 0.019,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S46",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 162,
+   "breaches": 0,
+   "seconds": 10.092,
+   "wall_seconds": 10.257,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S47",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 5.666,
+   "wall_seconds": 5.668,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S47",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.021,
+   "wall_seconds": 0.022,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S47",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 170,
+   "breaches": 0,
+   "seconds": 9.784,
+   "wall_seconds": 9.893,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S48",
+   "size": "large",
+   "method": "cpsat",
+   "uncrewed": 2,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 5.766,
+   "wall_seconds": 5.767,
+   "status": "OPTIMAL",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S48",
+   "size": "large",
+   "method": "greedy",
+   "uncrewed": 2,
+   "changes": 2,
+   "breaches": 0,
+   "seconds": 0.016,
+   "wall_seconds": 0.016,
+   "status": "GREEDY",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S48",
+   "size": "large",
+   "method": "scratch",
+   "uncrewed": 2,
+   "changes": 178,
+   "breaches": 0,
+   "seconds": 8.733,
+   "wall_seconds": 8.842,
+   "status": "FEASIBLE",
+   "illegal_seats": 2
+  },
+  {
+   "scenario": "S49",
+   "size": "medium",
+   "method": "cpsat",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 4.093,
+   "wall_seconds": 4.094,
+   "status": "OPTIMAL",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S49",
+   "size": "medium",
+   "method": "greedy",
+   "uncrewed": 0,
+   "changes": 1,
+   "breaches": 0,
+   "seconds": 0.017,
+   "wall_seconds": 0.018,
+   "status": "GREEDY",
+   "illegal_seats": 0
+  },
+  {
+   "scenario": "S49",
+   "size": "medium",
+   "method": "scratch",
+   "uncrewed": 0,
+   "changes": 155,
+   "breaches": 0,
+   "seconds": 9.596,
+   "wall_seconds": 9.692,
+   "status": "FEASIBLE",
+   "illegal_seats": 0
+  }
+ ],
+ "summary": {
+  "methods": {
+   "cpsat": {
+    "all": {
+     "n": 50,
+     "changes": {
+      "mean": 2.08,
+      "median": 2.0
+     },
+     "uncrewed": {
+      "mean": 0.5,
+      "median": 0.0
+     },
+     "seconds": {
+      "mean": 4.654,
+      "median": 4.463
+     }
+    },
+    "breaches": 0,
+    "uncrewed_total": 25,
+    "illegal_seats_total": 22,
+    "small": {
+     "n": 17,
+     "changes": {
+      "mean": 0.529,
+      "median": 0
+     },
+     "uncrewed": {
+      "mean": 0.118,
+      "median": 0
+     },
+     "seconds": {
+      "mean": 2.998,
+      "median": 3.577
+     }
+    },
+    "medium": {
+     "n": 17,
+     "changes": {
+      "mean": 2.118,
+      "median": 2
+     },
+     "uncrewed": {
+      "mean": 0.471,
+      "median": 0
+     },
+     "seconds": {
+      "mean": 5.112,
+      "median": 5.103
+     }
+    },
+    "large": {
+     "n": 16,
+     "changes": {
+      "mean": 3.688,
+      "median": 3.0
+     },
+     "uncrewed": {
+      "mean": 0.938,
+      "median": 0.5
+     },
+     "seconds": {
+      "mean": 5.927,
+      "median": 5.532
+     }
+    }
+   },
+   "greedy": {
+    "all": {
+     "n": 50,
+     "changes": {
+      "mean": 1.9,
+      "median": 2.0
+     },
+     "uncrewed": {
+      "mean": 0.68,
+      "median": 0.0
+     },
+     "seconds": {
+      "mean": 0.024,
+      "median": 0.021
+     }
+    },
+    "breaches": 0,
+    "uncrewed_total": 34,
+    "illegal_seats_total": 22,
+    "small": {
+     "n": 17,
+     "changes": {
+      "mean": 0.529,
+      "median": 0
+     },
+     "uncrewed": {
+      "mean": 0.118,
+      "median": 0
+     },
+     "seconds": {
+      "mean": 0.022,
+      "median": 0.019
+     }
+    },
+    "medium": {
+     "n": 17,
+     "changes": {
+      "mean": 1.941,
+      "median": 2
+     },
+     "uncrewed": {
+      "mean": 0.647,
+      "median": 0
+     },
+     "seconds": {
+      "mean": 0.023,
+      "median": 0.022
+     }
+    },
+    "large": {
+     "n": 16,
+     "changes": {
+      "mean": 3.312,
+      "median": 3.0
+     },
+     "uncrewed": {
+      "mean": 1.312,
+      "median": 1.5
+     },
+     "seconds": {
+      "mean": 0.027,
+      "median": 0.021
+     }
+    }
+   },
+   "scratch": {
+    "all": {
+     "n": 50,
+     "changes": {
+      "mean": 146.22,
+      "median": 166.5
+     },
+     "uncrewed": {
+      "mean": 0.5,
+      "median": 0.0
+     },
+     "seconds": {
+      "mean": 8.918,
+      "median": 9.128
+     }
+    },
+    "breaches": 0,
+    "uncrewed_total": 25,
+    "illegal_seats_total": 22,
+    "small": {
+     "n": 17,
+     "changes": {
+      "mean": 100.882,
+      "median": 84
+     },
+     "uncrewed": {
+      "mean": 0.118,
+      "median": 0
+     },
+     "seconds": {
+      "mean": 7.644,
+      "median": 7.982
+     }
+    },
+    "medium": {
+     "n": 17,
+     "changes": {
+      "mean": 163.176,
+      "median": 166
+     },
+     "uncrewed": {
+      "mean": 0.471,
+      "median": 0
+     },
+     "seconds": {
+      "mean": 9.637,
+      "median": 9.596
+     }
+    },
+    "large": {
+     "n": 16,
+     "changes": {
+      "mean": 176.375,
+      "median": 180.5
+     },
+     "uncrewed": {
+      "mean": 0.938,
+      "median": 0.5
+     },
+     "seconds": {
+      "mean": 9.509,
+      "median": 9.468
+     }
+    }
+   }
+  },
+  "wins": {
+   "cpsat_fewer_changes_than_scratch": {
+    "wins": 50,
+    "losses": 0,
+    "of": 50
+   },
+   "cpsat_fewer_uncrewed_than_greedy": {
+    "wins": 8,
+    "losses": 0,
+    "of": 50
+   }
+  }
+ },
+ "sizing": [
+  {
+   "base": "DEL",
+   "ruleset": "dgca_current",
+   "duties": 63,
+   "pilots_available": {
+    "CPT": 20,
+    "FO": 20
+   },
+   "pilots_needed": {
+    "FO": 15,
+    "CPT": 15
+   },
+   "uncovered": 0,
+   "feasible": true,
+   "proven_optimal": false,
+   "seconds": 10.928
+  },
+  {
+   "base": "BOM",
+   "ruleset": "dgca_current",
+   "duties": 63,
+   "pilots_available": {
+    "CPT": 20,
+    "FO": 20
+   },
+   "pilots_needed": {
+    "CPT": 15,
+    "FO": 15
+   },
+   "uncovered": 0,
+   "feasible": true,
+   "proven_optimal": false,
+   "seconds": 10.916
+  },
+  {
+   "base": "DEL",
+   "ruleset": "dgca_dec2025_exemption",
+   "duties": 63,
+   "pilots_available": {
+    "CPT": 20,
+    "FO": 20
+   },
+   "pilots_needed": {
+    "FO": 15,
+    "CPT": 15
+   },
+   "uncovered": 0,
+   "feasible": true,
+   "proven_optimal": false,
+   "seconds": 9.989
+  },
+  {
+   "base": "BOM",
+   "ruleset": "dgca_dec2025_exemption",
+   "duties": 50,
+   "pilots_available": {
+    "CPT": 20,
+    "FO": 20
+   },
+   "pilots_needed": {
+    "CPT": 12,
+    "FO": 12
+   },
+   "uncovered": 0,
+   "feasible": true,
+   "proven_optimal": false,
+   "seconds": 8.512
+  }
+ ]
+}

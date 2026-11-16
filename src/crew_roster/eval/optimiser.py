@@ -29,7 +29,8 @@ def run_one(scenario: Scenario, method: str, time_limit: float = 10.0,
     wall = time.perf_counter() - t0
     res = rp.result
     return {"scenario": scenario.id, "size": scenario.size, "method": method,
-            "uncrewed": len(res.uncovered), "changes": len(rp.changes),
+            "uncrewed": len(res.uncovered), "illegal_seats": 2 * len(res.illegal_duties),
+            "changes": len(rp.changes),
             "breaches": len(check(rp.problem, res.roster)), "seconds": round(res.seconds, 3),
             "wall_seconds": round(wall, 3), "status": res.status}
 
@@ -51,7 +52,8 @@ def _stats(rows: list[dict]) -> dict:
 def _wins(rows: list[dict], a: str, b: str, metric: str) -> dict:
     by = {(r["scenario"], r["method"]): r for r in rows}
     pairs = [(by[s, a], by[s, b]) for s, m in by if m == a and (s, b) in by]
-    return {"wins": sum(1 for x, y in pairs if x[metric] < y[metric]), "of": len(pairs)}
+    return {"wins": sum(1 for x, y in pairs if x[metric] < y[metric]),
+            "losses": sum(1 for x, y in pairs if x[metric] > y[metric]), "of": len(pairs)}
 
 
 def summarise(rows: Sequence[dict]) -> dict:
@@ -59,7 +61,9 @@ def summarise(rows: Sequence[dict]) -> dict:
     methods = {}
     for m in dict.fromkeys(r["method"] for r in rows):
         mine = [r for r in rows if r["method"] == m]
-        entry = {"all": _stats(mine), "breaches": sum(r["breaches"] for r in mine)}
+        entry = {"all": _stats(mine), "breaches": sum(r["breaches"] for r in mine),
+                 "uncrewed_total": sum(r["uncrewed"] for r in mine),
+                 "illegal_seats_total": sum(r.get("illegal_seats", 0) for r in mine)}
         for size in SIZES:
             sized = [r for r in mine if r["size"] == size]
             if sized:

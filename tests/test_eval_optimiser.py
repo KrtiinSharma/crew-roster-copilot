@@ -18,7 +18,7 @@ def test_benchmark_rows_have_the_right_keys():
                                                                 (small()[0].id, "greedy")]
     for r in rows:
         assert set(ROW_KEYS) <= set(r)
-        assert r["size"] == "small"
+        assert r["size"] == "small" and r["illegal_seats"] % 2 == 0
     assert all(r["breaches"] == 0 for r in rows if r["method"] == "cpsat")
 
 
@@ -42,8 +42,8 @@ def test_summarise_means_medians_and_wins():
     assert cp["all"]["changes"] == {"mean": pytest.approx(11 / 3, abs=0.01), "median": 4}
     assert cp["large"]["seconds"]["mean"] == 6.0 and cp["small"]["uncrewed"]["median"] == 0
     assert s["methods"]["greedy"]["breaches"] == 2 and s["methods"]["cpsat"]["breaches"] == 0
-    assert s["wins"]["cpsat_fewer_changes_than_scratch"] == {"wins": 2, "of": 3}
-    assert s["wins"]["cpsat_fewer_uncrewed_than_greedy"] == {"wins": 2, "of": 3}
+    assert s["wins"]["cpsat_fewer_changes_than_scratch"] == {"wins": 2, "losses": 0, "of": 3}
+    assert s["wins"]["cpsat_fewer_uncrewed_than_greedy"] == {"wins": 2, "losses": 0, "of": 3}
 
 
 def test_resume_skips_rows_already_in_the_file(tmp_path, monkeypatch):
