@@ -303,3 +303,13 @@ def test_claude_models_need_an_anthropic_key(no_keys, tmp_path):
 def test_judge_cost_estimate_is_small():
     est = agent_eval.judge_cost(calls=18, input_tokens=600, output_tokens=120)
     assert est == pytest.approx(18 * (600 * 0.10 + 120 * 0.50) / 1e6)
+
+
+def test_names_match_with_the_title_spelled_out():
+    assert agent_eval._bare("Capt. G. Kulkarni") in "captain g. kulkarni (bom-c15)"
+    assert agent_eval._bare("FO P. Malhotra") in "first officer p. malhotra"
+
+
+def test_numbers_written_as_words_count_for_recall():
+    assert agent_eval.found_numbers("One roster change; two seats, 3.5 hours") == [3.5, 1.0, 2.0]
+    assert agent_eval.found_numbers("someone, nobody") == []

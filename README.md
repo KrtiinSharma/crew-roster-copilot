@@ -122,14 +122,22 @@ How to read it:
 | DEL | 15 / 15 | 15 / 15 | 63 / 63 | 20 / 20 |
 | BOM | 15 / 15 | 12 / 12 | 63 / 50 | 20 / 20 |
 
-**Agent evaluation**: not yet run; it needs an LLM key. With `ANTHROPIC_API_KEY` in `.env`:
+**Agent evaluation** (Claude Haiku 5.5, 36 questions in 5 categories, expected answers computed by the service):
+
+| Right tool | Right arguments | Expected numbers present | Every number grounded | Tool calls | Seconds |
+|---|---|---|---|---|---|
+| 100% | 100% | 100% | 100% | 1.2 | 2.6 |
+
+Two scorer fixes were made after reading the first run, and the saved answers were re-scored (no new model calls): small numbers written as words ("one roster change") now count, and pilot names match with the title spelled out ("Captain G. Kulkarni"). Before the fixes the run scored 86% on numbers and 88% on names; every flagged answer was correct on reading.
+
+Each question here needs one or two tool calls. Open questions are harder: in a manual check, "who could replace the captain of BOM-D3-05?" first got an answer where the model picked a replacement itself instead of asking the optimiser, and the suggested pilot already had a duty later that day. The system prompt now sends such questions to `what_if`, and the same question then gave the optimiser's answer. Open questions like this are not in the dataset yet.
 
 ```bash
 uv run crew-eval agent            # Claude Haiku 5.5; --model openai/gpt-oss-120b uses Groq
 uv run crew-eval report
 ```
 
-The optional Claude judge on change explanations is also not run (see the checklist below).
+The optional Claude judge on change explanations has not been run (see the checklist below).
 
 ## Quick start
 
@@ -181,7 +189,7 @@ Copy `.env.example` to `.env`. All keys are optional for the roster and re-plann
 
 ## Before going live
 
-A checklist for the owner. Nothing below has been run yet.
+A checklist for the owner. Steps 1 to 3 are done (keys added, live test passed, agent evaluation run); the judge and steps 4 to 6 are not.
 
 1. Copy `.env.example` to `.env` and add `ANTHROPIC_API_KEY` (optionally a LangSmith key). Set a monthly spend limit in the Anthropic Console, since the deployed chat is public.
 2. Check the real model API: `uv run pytest -m live`

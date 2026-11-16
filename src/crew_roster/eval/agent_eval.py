@@ -52,9 +52,25 @@ def _contains(args: dict, expected: dict) -> bool:
     return _matches(args, expected)
 
 
+NUMBER_WORDS = {w: float(i) for i, w in enumerate(
+    "zero one two three four five six seven eight nine ten eleven twelve".split())}
+WORD = re.compile(r"\b(" + "|".join(NUMBER_WORDS) + r")\b", re.IGNORECASE)
+
+
+def found_numbers(text: str) -> list[float]:
+    """Numbers in an answer, counting small ones written as words ("one roster change")."""
+    return ([v for _, v in extract(text)]
+            + [NUMBER_WORDS[m.lower()] for m in WORD.findall(text)])
+
+
+def _bare(name: str) -> str:
+    """'Capt. G. Kulkarni' -> 'g. kulkarni': answers may spell the title out ("Captain")."""
+    return re.sub(r"^(capt\.?|captain|fo|first officer)\s+", "", name.lower())
+
+
 def score(case: AgentCase, answer: AgentAnswer, seconds: float = 0.0) -> dict:
     names = [t.name for t in answer.tool_calls]
-    found = [v for _, v in extract(answer.answer)]
+    found = found_numbers(answer.answer)
     hits = sum(1 for e in case.expected_numbers if any(abs(v - e) < TOLERANCE for v in found))
     text = answer.answer.lower()
     return {
@@ -63,7 +79,7 @@ def score(case: AgentCase, answer: AgentAnswer, seconds: float = 0.0) -> dict:
                        for t in answer.tool_calls),
         "numbers_recall": (round(hits / len(case.expected_numbers), 3)
                            if case.expected_numbers else 1.0),
-        "names_ok": (all(n.lower() in text for n in case.expected_names)
+        "names_ok": (all(_bare(n) in text for n in case.expected_names)
                      if case.expected_names else None),
         "grounded": answer.verified,
         "n_tool_calls": len(answer.tool_calls),

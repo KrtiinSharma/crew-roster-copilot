@@ -1,0 +1,1174 @@
+{
+ "config": {
+  "model": "claude-haiku-5-5",
+  "n_cases": 36,
+  "time_limit": 10.0
+ },
+ "rows": [
+  {
+   "id": "hours-00",
+   "category": "hours",
+   "question": "How many flight hours has FO D. Rao (DEL-F20) flown in the 7 days up to day 3, and how many remain?",
+   "ruleset": "dgca_current",
+   "answer": "FO D. Rao (DEL-F20) has flown 25.08 flight hours in the 7 days up to day 3, leaving 9.92 flight hours remaining under the 7-day limit of 35.0.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "pilot_status",
+     "args": {
+      "pilot_id": "DEL-F20",
+      "day": 3
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 3.95
+  },
+  {
+   "id": "hours-01",
+   "category": "hours",
+   "question": "How many flight hours has Capt. S. Nair (DEL-C06) flown in the 7 days up to day 6, and how many remain?",
+   "ruleset": "dgca_dec2025_exemption",
+   "answer": "Capt. S. Nair (DEL-C06) has flown 13.33 flight hours in the 7 days up to day 6, leaving 21.67 hours under the 7-day flight-time limit (35.0).",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "pilot_status",
+     "args": {
+      "pilot_id": "DEL-C06",
+      "day": 6
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.21
+  },
+  {
+   "id": "hours-02",
+   "category": "hours",
+   "question": "How many flight hours has FO B. Iyer (DEL-F08) flown in the 7 days up to day 1, and how many remain?",
+   "ruleset": "dgca_current",
+   "answer": "FO B. Iyer (DEL-F08) has flown **19.0 flight hours** in the 7 days up to day 1, leaving **16.0 hours** under the 35-hour 7-day limit.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "pilot_status",
+     "args": {
+      "pilot_id": "DEL-F08",
+      "day": 1
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.835
+  },
+  {
+   "id": "hours-03",
+   "category": "hours",
+   "question": "How many flight hours has Capt. S. Patel (DEL-C20) flown in the 7 days up to day 2, and how many remain?",
+   "ruleset": "dgca_dec2025_exemption",
+   "answer": "Capt. S. Patel (DEL-C20) has flown **12.17 flight hours** in the 7-day window up to day 2. That leaves **22.83 flight hours** remaining under the 7-day limit of 35.0.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "pilot_status",
+     "args": {
+      "pilot_id": "DEL-C20",
+      "day": 2
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.504
+  },
+  {
+   "id": "hours-04",
+   "category": "hours",
+   "question": "How many flight hours has Capt. V. Naidu (BOM-C07) flown in the 7 days up to day 2, and how many remain?",
+   "ruleset": "dgca_current",
+   "answer": "Capt. V. Naidu (BOM-C07) has flown **20.75 flight hours** in the 7-day window as of day 2, with **14.25 hours remaining** under the 35.0-hour 7-day limit.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "pilot_status",
+     "args": {
+      "pilot_id": "BOM-C07",
+      "day": 2
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.652
+  },
+  {
+   "id": "hours-05",
+   "category": "hours",
+   "question": "How many flight hours has Capt. G. Kulkarni (BOM-C15) flown in the 7 days up to day 3, and how many remain?",
+   "ruleset": "dgca_dec2025_exemption",
+   "answer": "Capt. G. Kulkarni (BOM-C15) has flown **17.67 hours** in the 7-day window and has **17.33 hours** remaining against the 35.0-hour limit.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "pilot_status",
+     "args": {
+      "pilot_id": "BOM-C15",
+      "day": 3
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 4.121
+  },
+  {
+   "id": "hours-06",
+   "category": "hours",
+   "question": "How many flight hours has FO P. Kapoor (DEL-F01) flown in the 7 days up to day 2, and how many remain?",
+   "ruleset": "dgca_current",
+   "answer": "FO P. Kapoor (DEL-F01) has flown **17.5 flight hours** in the 7-day window up to day 2. That leaves **17.5 hours** remaining under the 7-day flight-time limit of 35.0.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "pilot_status",
+     "args": {
+      "pilot_id": "DEL-F01",
+      "day": 2
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.427
+  },
+  {
+   "id": "hours-07",
+   "category": "hours",
+   "question": "How many flight hours has Capt. S. Desai (DEL-C09) flown in the 7 days up to day 5, and how many remain?",
+   "ruleset": "dgca_dec2025_exemption",
+   "answer": "Capt. S. Desai (DEL-C09) has flown **13.67 flight hours** in the 7-day window up to day 5, leaving **21.33 flight hours** remaining against the 35.0-hour 7-day limit.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "pilot_status",
+     "args": {
+      "pilot_id": "DEL-C09",
+      "day": 5
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 3.06
+  },
+  {
+   "id": "roster-00",
+   "category": "roster",
+   "question": "Who is the captain and first officer on duty BOM-D0-07?",
+   "ruleset": "dgca_current",
+   "answer": "BOM-D0-07 (BOM-CCU-BOM, report 16:00, release 23:35 on day 0) is crewed by:\n\n- **Captain:** Capt. B. Agarwal (BOM-C05)\n- **First Officer:** FO B. Singh (BOM-F06)",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": null,
+      "day": 0
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": true,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 1.99
+  },
+  {
+   "id": "roster-01",
+   "category": "roster",
+   "question": "Who is the captain and first officer on duty BOM-D4-02?",
+   "ruleset": "dgca_current",
+   "answer": "On BOM-D4-02 (BOM-GOI-BOM, report 05:00, release 09:35 on day 4), the captain is Capt. S. Bose (BOM-C11) and the first officer is FO M. Kaur (BOM-F10).",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": null,
+      "day": 4
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": true,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 1.892
+  },
+  {
+   "id": "roster-02",
+   "category": "roster",
+   "question": "Who is the captain and first officer on duty BOM-D1-07?",
+   "ruleset": "dgca_current",
+   "answer": "Duty BOM-D1-07 (BOM-CCU-BOM, report 16:00, release 23:35 on day 1) is crewed by:\n\n- **Captain:** Capt. S. Pillai (BOM-C03)\n- **First officer:** FO M. Kaur (BOM-F10)",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": null,
+      "day": 1
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": true,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.026
+  },
+  {
+   "id": "roster-03",
+   "category": "roster",
+   "question": "Who is the captain and first officer on duty BOM-D0-02?",
+   "ruleset": "dgca_current",
+   "answer": "On duty BOM-D0-02 (BOM-GOI-BOM, report 05:00, release 09:35) are Captain G. Kulkarni (BOM-C15) and First Officer P. Malhotra (BOM-F11).",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": null,
+      "day": 0
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": true,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.017
+  },
+  {
+   "id": "roster-04",
+   "category": "roster",
+   "question": "Who is the captain and first officer on duty DEL-D5-02?",
+   "ruleset": "dgca_current",
+   "answer": "On duty DEL-D5-02 (DEL-BLR-DEL, report 05:30, release 13:15 IST on day 5):\n\n- Captain: Capt. N. Agarwal (DEL-C03)\n- First officer: FO V. Mishra (DEL-F07)",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": null,
+      "day": 5
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": true,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.264
+  },
+  {
+   "id": "roster-05",
+   "category": "roster",
+   "question": "Who is the captain and first officer on duty DEL-D1-04?",
+   "ruleset": "dgca_current",
+   "answer": "On duty DEL-D1-04 (DEL-CCU-DEL, report 09:00, release 15:45 IST on day 1), the captain is Capt. S. Desai (DEL-C09). The first officer is FO P. Kapoor (DEL-F01).",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": null,
+      "day": 1
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": true,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.258
+  },
+  {
+   "id": "roster-06",
+   "category": "roster",
+   "question": "Who is the captain and first officer on duty DEL-D2-09?",
+   "ruleset": "dgca_current",
+   "answer": "Duty DEL-D2-09 (DEL-BLR-DEL, report D2 22:30, release D3 06:15) is crewed by:\n\n- **Captain:** Capt. R. Malhotra (DEL-C11)\n- **First Officer:** FO S. Rathore (DEL-F10)",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": null,
+      "day": 2
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": true,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.409
+  },
+  {
+   "id": "roster-07",
+   "category": "roster",
+   "question": "Who is the captain and first officer on duty BOM-D1-09?",
+   "ruleset": "dgca_current",
+   "answer": "On duty BOM-D1-09 (BOM-HYD-BOM, report 22:45 on D1, release 03:50 on D2):\n\n- Captain: BOM-C18, Capt. P. Reddy\n- First Officer: BOM-F14, FO R. Agarwal",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": null,
+      "day": 1
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": true,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 1.996
+  },
+  {
+   "id": "what_if-00",
+   "category": "what_if",
+   "question": "If Capt. P. Nair (DEL-C16) calls in sick on day 2, how many roster changes are needed?",
+   "ruleset": "dgca_current",
+   "answer": "If Capt. P. Nair (DEL-C16) is sick on day 2, one roster change is needed. Capt. N. Kapoor (DEL-C08) would take over the captain role on duty DEL-D2-06. The re-plan leaves no uncrewed duties and no rule breaches.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "what_if",
+     "args": {
+      "sick": [
+       {
+        "pilot_id": "DEL-C16",
+        "from_day": 2,
+        "to_day": 2
+       }
+      ],
+      "delays": [],
+      "cancel_flight_ids": [],
+      "ruleset": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.238
+  },
+  {
+   "id": "what_if-01",
+   "category": "what_if",
+   "question": "If Capt. P. Desai (BOM-C20) calls in sick on days 1 to 2, how many roster changes are needed?",
+   "ruleset": "dgca_current",
+   "answer": "If Capt. P. Desai (BOM-C20) is sick on days 1 and 2, **2 roster changes** are needed, and both are captain swaps to Capt. M. Bose (BOM-C19):\n\n- Day 1, duty BOM-D1-04: Capt. M. Bose takes over as captain.\n- Day 2, duty BOM-D2-02: Capt. M. Bose takes over as captain.\n\nThe optimiser found no rule breaches, and every duty stays crewed.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "what_if",
+     "args": {
+      "sick": [
+       {
+        "pilot_id": "BOM-C20",
+        "from_day": 1,
+        "to_day": 2
+       }
+      ],
+      "delays": [],
+      "cancel_flight_ids": [],
+      "ruleset": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.526
+  },
+  {
+   "id": "what_if-02",
+   "category": "what_if",
+   "question": "If FO P. Agarwal (BOM-F01) calls in sick on day 2, how many roster changes are needed?",
+   "ruleset": "dgca_current",
+   "answer": "One roster change is needed. If FO P. Agarwal (BOM-F01) is sick on day 2, FO N. Menon (BOM-F02) takes over the first officer seat on duty BOM-D2-06. The re-plan leaves no uncrewed duties and no rule breaches under the current ruleset.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "what_if",
+     "args": {
+      "sick": [
+       {
+        "pilot_id": "BOM-F01",
+        "from_day": 2,
+        "to_day": 2
+       }
+      ],
+      "delays": [],
+      "cancel_flight_ids": [],
+      "ruleset": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.526
+  },
+  {
+   "id": "what_if-03",
+   "category": "what_if",
+   "question": "If FO D. Bhat (BOM-F15) calls in sick on day 1, how many roster changes are needed?",
+   "ruleset": "dgca_current",
+   "answer": "**Two roster changes** are needed, and no rule breaches or uncovered duties result.\n\n1. **BOM-D1-04 (day 1):** FO R. Desai (BOM-F08) takes over from FO D. Bhat, who is sick.\n2. **BOM-D3-09 (day 3):** FO D. Bhat (BOM-F15) takes over from FO R. Desai, a knock-on change that rebalances cover after the first swap.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "what_if",
+     "args": {
+      "sick": [
+       {
+        "pilot_id": "BOM-F15",
+        "from_day": 1,
+        "to_day": 1
+       }
+      ],
+      "delays": [],
+      "cancel_flight_ids": [],
+      "ruleset": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.82
+  },
+  {
+   "id": "what_if-04",
+   "category": "what_if",
+   "question": "If FO R. Agarwal (BOM-F14) calls in sick on days 2 to 3, how many roster changes are needed?",
+   "ruleset": "dgca_current",
+   "answer": "If FO R. Agarwal (BOM-F14) is sick on days 2 and 3, the optimiser needs 2 roster changes, with no uncrewed duties and no rule breaches:\n\n1. BOM-D2-09 (first officer): FO R. Agarwal's duty goes to FO A. Banerjee (BOM-F18), because Agarwal is sick on day 2.\n2. BOM-D2-01 (first officer): FO A. Banerjee's existing duty goes to FO K. Naidu (BOM-F12), to free up cover after that change.\n\nNo changes were listed for day 3.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "what_if",
+     "args": {
+      "sick": [
+       {
+        "pilot_id": "BOM-F14",
+        "from_day": 2,
+        "to_day": 3
+       }
+      ],
+      "delays": [],
+      "cancel_flight_ids": [],
+      "ruleset": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.755
+  },
+  {
+   "id": "what_if-05",
+   "category": "what_if",
+   "question": "If FO P. Malhotra (BOM-F11) calls in sick on day 3, how many roster changes are needed?",
+   "ruleset": "dgca_current",
+   "answer": "If FO P. Malhotra (BOM-F11) is sick on day 3, one roster change is needed. The optimiser would move duty BOM-D3-01 (first officer seat) from P. Malhotra to FO B. Singh (BOM-F06). All 126 duties stay crewed, and no rule breaches result.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "what_if",
+     "args": {
+      "sick": [
+       {
+        "pilot_id": "BOM-F11",
+        "from_day": 3,
+        "to_day": 3
+       }
+      ],
+      "delays": [],
+      "cancel_flight_ids": [],
+      "ruleset": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.413
+  },
+  {
+   "id": "what_if-06",
+   "category": "what_if",
+   "question": "If FO D. Rao (DEL-F20) calls in sick on day 2, how many roster changes are needed?",
+   "ruleset": "dgca_current",
+   "answer": "If FO D. Rao (DEL-F20) is sick on day 2, one roster change is needed. FO V. Mishra (DEL-F07) would take over the first officer seat on duty DEL-D2-08. The re-plan has no rule breaches and no uncrewed duties.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "what_if",
+     "args": {
+      "sick": [
+       {
+        "pilot_id": "DEL-F20",
+        "from_day": 2,
+        "to_day": 2
+       }
+      ],
+      "delays": [],
+      "cancel_flight_ids": [],
+      "ruleset": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.401
+  },
+  {
+   "id": "what_if-07",
+   "category": "what_if",
+   "question": "If Capt. S. Nair (DEL-C06) calls in sick on day 4, how many roster changes are needed?",
+   "ruleset": "dgca_current",
+   "answer": "If Capt. S. Nair (DEL-C06) is sick on day 4, one roster change is needed. Duty DEL-D4-07 moves its captain seat from Capt. S. Nair to Capt. A. Malhotra (DEL-C13). The re-plan has no uncovered duties and no rule breaches.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "what_if",
+     "args": {
+      "sick": [
+       {
+        "pilot_id": "DEL-C06",
+        "from_day": 4,
+        "to_day": 4
+       }
+      ],
+      "delays": [],
+      "cancel_flight_ids": [],
+      "ruleset": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.507
+  },
+  {
+   "id": "explain-00",
+   "category": "explain",
+   "question": "Why was FO V. Singh (BOM-F13) replaced as first officer on duty BOM-D3-03?",
+   "ruleset": "dgca_current",
+   "answer": "FO V. Singh (BOM-F13) was replaced on duty BOM-D3-03 because they were reported sick for day 3. The change moves the duty to BOM-F19 as first officer.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": "BOM-F13",
+      "day": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    },
+    {
+     "name": "explain_change",
+     "args": {
+      "change_id": "BOM-D3-03:FO"
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 2,
+   "seconds": 2.807
+  },
+  {
+   "id": "explain-01",
+   "category": "explain",
+   "question": "Why was Capt. V. Naidu (BOM-C07) replaced as captain on duty BOM-D3-09?",
+   "ruleset": "dgca_current",
+   "answer": "Capt. V. Naidu (BOM-C07) was replaced because they were reported sick for day 3. The rule-checker lists \"sick\" as the only reason for this change, and the replacement captain is BOM-C08.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": "BOM-C07",
+      "day": 3
+     },
+     "seconds": 0.0,
+     "ok": true
+    },
+    {
+     "name": "explain_change",
+     "args": {
+      "change_id": "BOM-D3-09:CPT"
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 2,
+   "seconds": 3.282
+  },
+  {
+   "id": "explain-02",
+   "category": "explain",
+   "question": "Why was Capt. S. Agarwal (BOM-C01) replaced as captain on duty BOM-D5-02?",
+   "ruleset": "dgca_current",
+   "answer": "Capt. S. Agarwal (BOM-C01) was replaced on duty BOM-D5-02 because they were reported sick for day 5. The re-plan assigned Capt. BOM-C18 to that captain seat in their place.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "explain_change",
+     "args": {
+      "change_id": "BOM-D5-02:CPT"
+     },
+     "seconds": 0.0,
+     "ok": true
+    },
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": "BOM-C01",
+      "day": 5
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 2,
+   "seconds": 3.514
+  },
+  {
+   "id": "explain-03",
+   "category": "explain",
+   "question": "Why was FO A. Banerjee (BOM-F18) replaced as first officer on duty BOM-D4-09?",
+   "ruleset": "dgca_current",
+   "answer": "FO A. Banerjee (BOM-F18) was replaced on BOM-D4-09 because the pilot was reported sick for day 4. The rule checker lists \"sick\" as the only reason. The current re-plan assigns BOM-F06 to that duty instead.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": "BOM-F18",
+      "day": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    },
+    {
+     "name": "explain_change",
+     "args": {
+      "change_id": "BOM-D4-09:FO"
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 2,
+   "seconds": 3.579
+  },
+  {
+   "id": "explain-04",
+   "category": "explain",
+   "question": "Why was Capt. M. Bose (BOM-C19) replaced as captain on duty BOM-D4-07?",
+   "ruleset": "dgca_current",
+   "answer": "Capt. M. Bose (BOM-C19) was replaced on duty BOM-D4-07 because they were reported sick for day 4. The optimiser's change assigns BOM-C16 as captain on that duty.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": "BOM-C19",
+      "day": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    },
+    {
+     "name": "explain_change",
+     "args": {
+      "change_id": "BOM-D4-07:CPT"
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 2,
+   "seconds": 3.05
+  },
+  {
+   "id": "explain-05",
+   "category": "explain",
+   "question": "Why was Capt. G. Gupta (BOM-C08) replaced as captain on duty BOM-D2-08?",
+   "ruleset": "dgca_current",
+   "answer": "Capt. G. Gupta (BOM-C08) was replaced on duty BOM-D2-08 because they were reported sick for day 2. The captain on that duty is now BOM-C05.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": "BOM-C08",
+      "day": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    },
+    {
+     "name": "explain_change",
+     "args": {
+      "change_id": "BOM-D2-08:CPT"
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 2,
+   "seconds": 3.059
+  },
+  {
+   "id": "explain-06",
+   "category": "explain",
+   "question": "Why was Capt. A. Bhat (DEL-C04) replaced as captain on duty DEL-D3-07?",
+   "ruleset": "dgca_current",
+   "answer": "Capt. A. Bhat (DEL-C04) was replaced on DEL-D3-07 because they were reported sick for day 3. The optimiser moved the captain seat to DEL-C08, which is the change listed for that duty.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "explain_change",
+     "args": {
+      "change_id": "DEL-D3-07:CPT"
+     },
+     "seconds": 0.0,
+     "ok": true
+    },
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": "DEL-C04",
+      "day": null
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 2,
+   "seconds": 2.601
+  },
+  {
+   "id": "explain-07",
+   "category": "explain",
+   "question": "Why was Capt. S. Desai (DEL-C09) replaced as captain on duty DEL-D3-05?",
+   "ruleset": "dgca_current",
+   "answer": "Capt. S. Desai (DEL-C09) was replaced because they were reported sick for day 3. The optimiser moved the captain role on DEL-D3-05 to DEL-C08. The roster also shows no duties for DEL-C09 on day 3, which fits the sick report.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "get_roster",
+     "args": {
+      "pilot_id": "DEL-C09",
+      "day": 3
+     },
+     "seconds": 0.0,
+     "ok": true
+    },
+    {
+     "name": "explain_change",
+     "args": {
+      "change_id": "DEL-D3-05:CPT"
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 2,
+   "seconds": 3.468
+  },
+  {
+   "id": "sizing-00",
+   "category": "sizing",
+   "question": "How many captains and first officers does DEL need under the current DGCA rules?",
+   "ruleset": "dgca_current",
+   "answer": "DEL needs 15 captains and 15 first officers under the current DGCA rules, and all 63 duties are covered. This is an upper bound, not a proven minimum, so fewer pilots might also work. The base currently has 20 captains and 20 first officers available.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "min_pilots_needed",
+     "args": {
+      "base": "DEL",
+      "ruleset": "dgca_current"
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.271
+  },
+  {
+   "id": "sizing-01",
+   "category": "sizing",
+   "question": "How many captains and first officers does BOM need under the current DGCA rules?",
+   "ruleset": "dgca_current",
+   "answer": "BOM needs 15 captains and 15 first officers under the current DGCA rules, to cover all 63 duties. This is an upper bound, not a proven minimum, so fewer pilots might also work. The base currently has 20 captains and 20 first officers available.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "min_pilots_needed",
+     "args": {
+      "base": "BOM",
+      "ruleset": "dgca_current"
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 1.987
+  },
+  {
+   "id": "sizing-02",
+   "category": "sizing",
+   "question": "How many captains and first officers does DEL need under the December 2025 DGCA exemption?",
+   "ruleset": "dgca_dec2025_exemption",
+   "answer": "Under the December 2025 DGCA exemption, DEL needs 15 captains and 15 first officers to crew all 63 of its duties. This is an upper bound, not a proven minimum, so fewer pilots might also work.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "min_pilots_needed",
+     "args": {
+      "base": "DEL",
+      "ruleset": "dgca_dec2025_exemption"
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 2.424
+  },
+  {
+   "id": "sizing-03",
+   "category": "sizing",
+   "question": "How many captains and first officers does BOM need under the December 2025 DGCA exemption?",
+   "ruleset": "dgca_dec2025_exemption",
+   "answer": "Under the December 2025 DGCA exemption, BOM needs 12 captains and 12 first officers to crew all 50 of its duties. This is an upper bound, not a proven minimum, so fewer pilots might also work.",
+   "verified": true,
+   "ungrounded": [],
+   "tool_calls": [
+    {
+     "name": "min_pilots_needed",
+     "args": {
+      "base": "BOM",
+      "ruleset": "dgca_dec2025_exemption"
+     },
+     "seconds": 0.0,
+     "ok": true
+    }
+   ],
+   "tool_ok": true,
+   "args_ok": true,
+   "numbers_recall": 1.0,
+   "names_ok": null,
+   "grounded": true,
+   "n_tool_calls": 1,
+   "seconds": 1.996
+  }
+ ],
+ "summary": {
+  "all": {
+   "n": 36,
+   "tool_ok": 1.0,
+   "args_ok": 1.0,
+   "numbers_recall": 1.0,
+   "names_ok": 1.0,
+   "grounded": 1.0,
+   "n_tool_calls": 1.222,
+   "seconds": 2.634
+  },
+  "by_category": {
+   "hours": {
+    "n": 8,
+    "tool_ok": 1.0,
+    "args_ok": 1.0,
+    "numbers_recall": 1.0,
+    "names_ok": null,
+    "grounded": 1.0,
+    "n_tool_calls": 1.0,
+    "seconds": 2.97
+   },
+   "roster": {
+    "n": 8,
+    "tool_ok": 1.0,
+    "args_ok": 1.0,
+    "numbers_recall": 1.0,
+    "names_ok": 1.0,
+    "grounded": 1.0,
+    "n_tool_calls": 1.0,
+    "seconds": 2.107
+   },
+   "what_if": {
+    "n": 8,
+    "tool_ok": 1.0,
+    "args_ok": 1.0,
+    "numbers_recall": 1.0,
+    "names_ok": null,
+    "grounded": 1.0,
+    "n_tool_calls": 1.0,
+    "seconds": 2.523
+   },
+   "explain": {
+    "n": 8,
+    "tool_ok": 1.0,
+    "args_ok": 1.0,
+    "numbers_recall": 1.0,
+    "names_ok": null,
+    "grounded": 1.0,
+    "n_tool_calls": 2.0,
+    "seconds": 3.17
+   },
+   "sizing": {
+    "n": 4,
+    "tool_ok": 1.0,
+    "args_ok": 1.0,
+    "numbers_recall": 1.0,
+    "names_ok": null,
+    "grounded": 1.0,
+    "n_tool_calls": 1.0,
+    "seconds": 2.17
+   }
+  }
+ },
+ "stopped": null
+}

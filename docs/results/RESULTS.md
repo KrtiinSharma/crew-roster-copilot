@@ -41,7 +41,21 @@ Fewest captains / first officers per base that still crew every duty (CP-SAT, de
 
 ## Agent evaluation
 
-No agent results yet. With `GROQ_API_KEY` in `.env`, run `uv run crew-eval agent --model openai/gpt-oss-120b` (and `--model openai/gpt-oss-20b`), then `uv run crew-eval report`. It uses Groq's free tier and is resumable.
+36 questions in 5 categories; every expected answer is computed by the service, not written by hand. *Tool* = called the right tool; *args* = with the right arguments; *numbers* = share of expected numbers present in the answer; *grounded* = passed the number check (every number came from a tool).
+
+| Model | Cases | Tool | Args | Numbers | Grounded | Tool calls | Seconds |
+|---|---|---|---|---|---|---|---|
+| claude-haiku-5-5 | 36 | 100% | 100% | 100% | 100% | 1.2 | 2.6 |
+
+Per category (names = both pilot names present, roster questions only):
+
+| Model | Category | Cases | Tool | Args | Numbers | Names | Grounded |
+|---|---|---|---|---|---|---|---|
+| claude-haiku-5-5 | hours | 8 | 100% | 100% | 100% | - | 100% |
+| claude-haiku-5-5 | roster | 8 | 100% | 100% | 100% | 100% | 100% |
+| claude-haiku-5-5 | what_if | 8 | 100% | 100% | 100% | - | 100% |
+| claude-haiku-5-5 | explain | 8 | 100% | 100% | 100% | - | 100% |
+| claude-haiku-5-5 | sizing | 4 | 100% | 100% | 100% | - | 100% |
 
 ## Claude judge on change explanations
 
