@@ -204,7 +204,7 @@ A checklist for the owner. Steps 1 to 3 are done (keys added, live test passed, 
    git remote add origin https://github.com/<user>/crew-roster-copilot.git
    git push -u origin main
    ```
-5. Deploy the API to a free Hugging Face Space. Free accounts get Gradio Spaces on ZeroGPU hardware (Docker Spaces and CPU hardware are paid), so `deploy/hf-space/app.py` serves the FastAPI app from a Gradio Space, with a small Gradio page at `/ui`; nothing uses the GPU.
+5. Deploy the API to a free Hugging Face Space. Free accounts get Gradio Spaces on ZeroGPU hardware (Docker Spaces and CPU hardware are paid), so `deploy/hf-space/app.py` serves the FastAPI app from a Gradio Space, with a small Gradio page at the root; nothing needs the GPU, but ZeroGPU requires one `@spaces.GPU` event, so the page has a "Check GPU" button.
    - On huggingface.co create a Space with the Gradio SDK (blank template, ZeroGPU), public.
    - In the Space settings add the secret `GROQ_API_KEY` and the variables `LLM_PROVIDER=groq` and `ALLOWED_ORIGINS=https://<user>.github.io`. Groq's free tier keeps the public demo at no cost; Claude stays the model for local use and the evaluation.
    - Create a Hugging Face access token with write access. In the GitHub repository add it as the Actions secret `HF_TOKEN`, and add the Actions variable `HF_SPACE=<hf-user>/<space-name>`.

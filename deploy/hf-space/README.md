@@ -22,7 +22,8 @@ and a LangGraph agent that answers questions about the roster through tools.
 - API docs: `/docs` on this Space
 
 `app.py` serves the project's FastAPI app (the same one the Dockerfile runs) with a small Gradio
-page at `/ui`, because free accounts get Gradio Spaces on ZeroGPU hardware. Nothing uses the GPU.
+page at the root, because free accounts get Gradio Spaces on ZeroGPU hardware. Nothing needs the GPU;
+the page has one "Check GPU" button because ZeroGPU requires a `@spaces.GPU` event.
 
 This Space is synced automatically from the GitHub repository; do not edit it here.
 All airline, flight and pilot data is synthetic.
