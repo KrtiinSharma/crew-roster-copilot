@@ -24,3 +24,18 @@ class Problem(Frozen):
 
     def unavailable_days(self, pilot: Pilot) -> frozenset[int]:
         return pilot.unavailable_days | self.sick.get(pilot.id, frozenset())
+
+
+def build_problem(airline, ruleset: Ruleset) -> Problem:
+    from crew_roster.duties import build  # local import avoids a cycle via roster.check
+
+    duties = build(list(airline.turns.values()), airline.flights, ruleset)
+    return Problem(
+        ruleset=ruleset,
+        duties=duties,
+        pilots=airline.pilots,
+        history=airline.history,
+        turns=airline.turns,
+        flights=airline.flights,
+        horizon_days=airline.days,
+    )
