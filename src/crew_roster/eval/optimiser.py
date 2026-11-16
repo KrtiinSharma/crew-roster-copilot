@@ -80,11 +80,20 @@ def sizing_table(time_limit: float = 15.0) -> list[dict]:
     return table
 
 
-def _write(out: Path, data: dict) -> None:
+def write_json(out: Path, data: dict) -> None:
+    """Write via a temp file; OneDrive/antivirus can briefly lock the target, so retry."""
     out.parent.mkdir(parents=True, exist_ok=True)
+    text = json.dumps(data, indent=1)
     tmp = out.with_suffix(".tmp")
-    tmp.write_text(json.dumps(data, indent=1), encoding="utf-8")
-    tmp.replace(out)
+    tmp.write_text(text, encoding="utf-8")
+    for attempt in range(5):
+        try:
+            tmp.replace(out)
+            return
+        except PermissionError:
+            time.sleep(0.5 * (attempt + 1))
+    out.write_text(text, encoding="utf-8")
+    tmp.unlink(missing_ok=True)
 
 
 def run_optimiser_eval(n: int = 50, time_limit: float = 10.0,
@@ -114,10 +123,10 @@ def run_optimiser_eval(n: int = 50, time_limit: float = 10.0,
             log(f"{s.id} {s.size:<6} {m:<7} changes={r['changes']:<4} "
                 f"uncrewed={r['uncrewed']:<3} breaches={r['breaches']} {r['seconds']}s")
             data["summary"] = summarise(rows)
-            _write(out, data)
+            write_json(out, data)
     if not data["sizing"]:
         log("crew sizing (min_pilots_needed) for DEL/BOM x both rulesets ...")
         data["sizing"] = sizing_table(sizing_time_limit)
     data["summary"] = summarise(rows)
-    _write(out, data)
+    write_json(out, data)
     return data

@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     langsmith_tracing: bool = False
     langsmith_project: str = "crew-roster-copilot"
 
+    anthropic_api_key: str = ""  # only for the optional eval judge (crew-eval agent --judge)
+    judge_model: str = "claude-haiku-5-5"
+
     allowed_origins: str = "http://localhost:5173"
     rate_limit_per_minute: int = 10
     solve_time_limit: float = 10.0
