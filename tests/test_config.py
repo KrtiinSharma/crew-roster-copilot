@@ -22,5 +22,5 @@ def test_env_example_lists_every_setting_with_empty_secrets():
         if "=" in line and not line.startswith("#")
     }
     assert keys == {name.upper() for name in Settings.model_fields}
-    for secret in ("GROQ_API_KEY", "LANGSMITH_API_KEY"):
+    for secret in ("ANTHROPIC_API_KEY", "GROQ_API_KEY", "LANGSMITH_API_KEY"):
         assert f"{secret}=\n" in text + "\n"

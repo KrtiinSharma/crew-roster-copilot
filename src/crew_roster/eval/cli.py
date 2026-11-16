@@ -19,8 +19,10 @@ def main(argv: list[str] | None = None) -> int:
     o.add_argument("--n", type=int, default=50, help="number of scenarios")
     o.add_argument("--time-limit", type=float, default=10.0, help="CP-SAT seconds per solve")
 
-    a = sub.add_parser("agent", help="run the agent over the eval dataset (needs GROQ_API_KEY)")
-    a.add_argument("--model", default="openai/gpt-oss-120b", help="Groq model, no fallback")
+    a = sub.add_parser("agent", help="run the agent over the eval dataset (needs an LLM key)")
+    a.add_argument("--model", default="claude-haiku-5-5",
+                   help="claude-* (ANTHROPIC_API_KEY) or a Groq model such as "
+                        "openai/gpt-oss-120b (GROQ_API_KEY); no fallback")
     a.add_argument("--limit", type=int, default=None, help="only the first N cases")
     a.add_argument("--judge", action="store_true",
                    help="score explanations with Claude (needs ANTHROPIC_API_KEY; costs cents)")

@@ -86,6 +86,27 @@ def summarise(rows: Sequence[dict]) -> dict:
             "by_category": {c: _means([r for r in rows if r["category"] == c]) for c in cats}}
 
 
+def model_factory(model: str) -> LlmFactory:
+    """claude-* models go to Anthropic, anything else to Groq."""
+    return claude_factory(model) if model.startswith("claude") else groq_factory(model)
+
+
+def claude_factory(model: str) -> LlmFactory:
+    """The named Claude model at low effort, tools bound (same settings as the app)."""
+    key = get_settings().anthropic_api_key
+    if not key:
+        raise SystemExit("ANTHROPIC_API_KEY is not set in .env: needed for --model " + model)
+
+    def factory(tools):
+        from langchain_anthropic import ChatAnthropic
+
+        llm = ChatAnthropic(model=model, api_key=key, max_tokens=8000, max_retries=2,
+                            timeout=30, output_config={"effort": "low"})
+        return llm.bind_tools(list(tools)) if tools else llm
+
+    return factory
+
+
 def groq_factory(model: str) -> LlmFactory:
     """The named Groq model only (no fallback), tools bound."""
     key = get_settings().groq_api_key
@@ -149,7 +170,7 @@ def run_agent_eval(model: str, cases: Sequence[AgentCase] | None = None,
     _check_keys(settings, judge, langsmith)
     if time_limit is None:
         time_limit = settings.solve_time_limit  # same as the API, so the agent sees one planner
-    factory = llm_factory or groq_factory(model)
+    factory = llm_factory or model_factory(model)
     out = Path(out or RESULTS_DIR / f"agent-{model_slug(model)}.json")
     if cases is None:
         log("building the evaluation dataset (sizing takes ~1 min the first time) ...")

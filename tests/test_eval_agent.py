@@ -295,6 +295,11 @@ def test_default_factory_needs_a_groq_key(no_keys, tmp_path):
         run_agent_eval("openai/gpt-oss-120b", [ROSTER], out=tmp_path / "a.json")
 
 
+def test_claude_models_need_an_anthropic_key(no_keys, tmp_path):
+    with pytest.raises(SystemExit, match="ANTHROPIC_API_KEY"):
+        run_agent_eval("claude-haiku-5-5", [ROSTER], out=tmp_path / "a.json")
+
+
 def test_judge_cost_estimate_is_small():
     est = agent_eval.judge_cost(calls=18, input_tokens=600, output_tokens=120)
     assert est == pytest.approx(18 * (600 * 0.10 + 120 * 0.50) / 1e6)

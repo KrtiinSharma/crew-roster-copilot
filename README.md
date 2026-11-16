@@ -6,7 +6,7 @@ A DGCA-compliant pilot rostering system for a fictional airline, **Skyline Air**
 |---|---|
 | **Optimisation** | OR-tools CP-SAT: duty building as set partitioning, then roster assignment; minimum-change re-planning |
 | **Verification** | One legality checker, separate from the solver, is the single source of truth |
-| **Agent** | LangGraph tool-calling agent on Groq (gpt-oss), with a number-check guard and one retry |
+| **Agent** | LangGraph tool-calling agent on Claude Haiku 5.5 (or Groq gpt-oss), with a number-check guard and one retry |
 | **Evaluation** | 50-scenario optimiser benchmark (CP-SAT vs greedy vs from-scratch), crew sizing, agent eval harness |
 | **Serving** | FastAPI on Google Cloud Run, React UI on GitHub Pages |
 
@@ -122,10 +122,10 @@ How to read it:
 | DEL | 15 / 15 | 15 / 15 | 63 / 63 | 20 / 20 |
 | BOM | 15 / 15 | 12 / 12 | 63 / 50 | 20 / 20 |
 
-**Agent evaluation**: not yet run; it needs a Groq key. With `GROQ_API_KEY` in `.env`:
+**Agent evaluation**: not yet run; it needs an LLM key. With `ANTHROPIC_API_KEY` in `.env`:
 
 ```bash
-uv run crew-eval agent --model openai/gpt-oss-120b
+uv run crew-eval agent            # Claude Haiku 5.5; --model openai/gpt-oss-120b uses Groq
 uv run crew-eval report
 ```
 
@@ -144,21 +144,21 @@ npm ci
 npm run dev                       # UI on http://localhost:5173
 ```
 
-`crew-solve` options: `--ruleset dgca_current|dgca_dec2025_exemption`, `--time-limit`, `--save`. The roster works without any key; only chat needs `GROQ_API_KEY` (without it `/chat` returns 503).
+`crew-solve` options: `--ruleset dgca_current|dgca_dec2025_exemption`, `--time-limit`, `--save`. The roster works without any key; only chat needs `ANTHROPIC_API_KEY` or `GROQ_API_KEY` (without one `/chat` returns 503).
 
 Tests:
 
 ```bash
 uv run pytest                     # fast suite
 uv run pytest -m slow             # long solver tests
-uv run pytest -m live             # calls real Groq; needs GROQ_API_KEY in .env
+uv run pytest -m live             # calls the real LLM; needs ANTHROPIC_API_KEY or GROQ_API_KEY
 ```
 
 Evaluation commands:
 
 ```bash
 uv run crew-eval optimiser        # benchmark + crew sizing (--n, --time-limit)
-uv run crew-eval agent --model openai/gpt-oss-120b   # needs GROQ_API_KEY (--limit, --judge, --langsmith)
+uv run crew-eval agent           # Claude Haiku by default (--model, --limit, --judge, --langsmith)
 uv run crew-eval report           # writes docs/results/RESULTS.md
 ```
 
@@ -168,11 +168,13 @@ Copy `.env.example` to `.env`. All keys are optional for the roster and re-plann
 
 | Variable | Purpose |
 |---|---|
-| `GROQ_API_KEY` | Agent chat (free key from console.groq.com) |
-| `ANSWER_MODEL` / `FAST_MODEL` | Default `openai/gpt-oss-120b` / `openai/gpt-oss-20b` |
+| `LLM_PROVIDER` | `auto` (default: Claude if `ANTHROPIC_API_KEY` is set, else Groq), `anthropic` or `groq` |
+| `ANTHROPIC_API_KEY`, `CLAUDE_MODEL` | Agent chat on Claude (default `claude-haiku-5-5`); the key also runs the optional eval judge |
+| `GROQ_API_KEY` | Alternative: agent chat on Groq (free key from console.groq.com) |
+| `ANSWER_MODEL` / `FAST_MODEL` | Groq models, default `openai/gpt-oss-120b` / `openai/gpt-oss-20b` |
 | `LLM_EXPLANATIONS` | Rewrite change explanations with the LLM (numbers still checked) |
 | `LANGSMITH_API_KEY`, `LANGSMITH_TRACING`, `LANGSMITH_PROJECT` | Optional tracing |
-| `ANTHROPIC_API_KEY`, `JUDGE_MODEL` | Optional Claude judge for the agent eval (default `claude-haiku-5-5`) |
+| `JUDGE_MODEL` | Optional Claude judge for the agent eval (default `claude-haiku-5-5`) |
 | `ALLOWED_ORIGINS`, `RATE_LIMIT_PER_MINUTE`, `SOLVE_TIME_LIMIT` | API settings |
 
 `.env` is git-ignored and is never part of the Docker image or the Cloud Run source upload.
@@ -181,13 +183,12 @@ Copy `.env.example` to `.env`. All keys are optional for the roster and re-plann
 
 A checklist for the owner. Nothing below has been run yet.
 
-1. Copy `.env.example` to `.env` and add the Groq key (and optionally LangSmith and Anthropic keys).
+1. Copy `.env.example` to `.env` and add `ANTHROPIC_API_KEY` (optionally a LangSmith key). Set a monthly spend limit in the Anthropic Console, since the deployed chat is public.
 2. Check the real model API: `uv run pytest -m live`
 3. Run the agent evaluation, then optionally the judge:
    ```bash
-   uv run crew-eval agent --model openai/gpt-oss-120b
-   uv run crew-eval agent --model openai/gpt-oss-20b
-   uv run crew-eval agent --model openai/gpt-oss-120b --judge   # prints estimated cost first
+   uv run crew-eval agent            # Claude Haiku 5.5
+   uv run crew-eval agent --judge    # explanation judge; prints estimated cost first
    uv run crew-eval report
    ```
 4. Create the GitHub repository `crew-roster-copilot`, then:
@@ -202,7 +203,7 @@ A checklist for the owner. Nothing below has been run yet.
    Options: `--project`, `--region`, `--origins`. The script reads keys from `.env`, sets them as service environment variables, and prints the service URL.
 6. In the GitHub repository set the Actions variable `API_URL` to that URL, and enable Pages with the GitHub Actions source. The workflow in `.github/workflows/pages.yml` builds and deploys the frontend.
 
-**Cost.** Groq runs on its free tier and Cloud Run on its free tier (scales to zero, one instance, so the in-memory rate limiter stays meaningful). The Claude judge is optional, uses claude-haiku-5-5 and costs a few cents; it prints the estimated cost before any call.
+**Cost.** Chat uses Claude Haiku 5.5 ($0.10 per million input tokens, $0.50 per million output tokens), so a chat answer costs a small fraction of a cent; requests are rate-limited per IP. Cloud Run runs on its free tier (scales to zero, one instance, so the in-memory rate limiter stays meaningful). The Claude judge is optional and costs a few cents; it prints the estimated cost before any call.
 
 ## Tech stack and skills shown
 
@@ -211,7 +212,7 @@ A checklist for the owner. Nothing below has been run yet.
 | Optimisation | OR-tools CP-SAT, set partitioning, soft constraints and lexicographic objectives, minimum-change re-planning, crew sizing |
 | Domain modelling | Regulatory rules as data (YAML with CAR references), explicit assumptions |
 | Verification | Independent checker, seeded benchmark against greedy and scratch baselines |
-| LLM engineering | LangGraph tool-calling agent, Groq gpt-oss, number-check guard, optional LLM judge, LangSmith tracing |
+| LLM engineering | LangGraph tool-calling agent, Claude Haiku 5.5 (Groq gpt-oss as alternative), number-check guard, optional LLM judge, LangSmith tracing |
 | Backend | Python 3.11, FastAPI, pydantic, rate limiting, Docker, Google Cloud Run |
 | Frontend | React 19, Vite, TypeScript, Tailwind, GitHub Pages via Actions |
 | Practice | uv, pytest with slow/live markers, ruff, GitHub Actions CI |

@@ -3,7 +3,8 @@
     uv run python scripts/deploy_cloudrun.py --origins https://<github-user>.github.io
 
 Needs the gcloud CLI, logged in (`gcloud auth login`) with billing enabled on the project.
-Cloud Build builds the Dockerfile from the files .gcloudignore lets through. GROQ_API_KEY /
+Cloud Build builds the Dockerfile from the files .gcloudignore lets through. The LLM key in use
+(ANTHROPIC_API_KEY or GROQ_API_KEY) and
 LANGSMITH_API_KEY are read from .env and set as environment variables on the service; they are
 never part of the uploaded source or the image. max-instances is 1 so the in-memory rate
 limiter stays meaningful.
@@ -16,6 +17,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+from crew_roster.agent.llm import active_provider
 from crew_roster.config import ROOT, get_settings
 
 SERVICE = "crew-roster-copilot"
@@ -33,16 +35,20 @@ def gcloud(*args: str, capture: bool = False) -> str:
 
 def env_vars(origins: str) -> dict[str, str]:
     s = get_settings()
-    if not s.groq_api_key:
-        raise SystemExit("GROQ_API_KEY missing from .env")
+    provider = active_provider(s)
+    if provider is None:
+        raise SystemExit("no LLM key in .env: set ANTHROPIC_API_KEY (or GROQ_API_KEY)")
     allowed = ",".join(o for o in ["http://localhost:5173", origins] if o)
     out = {
-        "GROQ_API_KEY": s.groq_api_key,
-        "ANSWER_MODEL": s.answer_model,
-        "FAST_MODEL": s.fast_model,
+        "LLM_PROVIDER": provider,
         "ALLOWED_ORIGINS": allowed,
         "LLM_EXPLANATIONS": "true" if s.llm_explanations else "false",
     }
+    if provider == "anthropic":  # only the key that is used goes to the server
+        out |= {"ANTHROPIC_API_KEY": s.anthropic_api_key, "CLAUDE_MODEL": s.claude_model}
+    else:
+        out |= {"GROQ_API_KEY": s.groq_api_key, "ANSWER_MODEL": s.answer_model,
+                "FAST_MODEL": s.fast_model}
     if s.langsmith_api_key:
         out |= {
             "LANGSMITH_API_KEY": s.langsmith_api_key,

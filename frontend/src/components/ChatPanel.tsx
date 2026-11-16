@@ -27,7 +27,7 @@ interface Props {
 }
 
 function errorText(e: unknown): string {
-  if (e instanceof ApiError && e.status === 503) return "The assistant isn't configured yet (no Groq key)."
+  if (e instanceof ApiError && e.status === 503) return "The assistant isn't configured yet (no LLM API key)."
   return e instanceof Error ? e.message : 'Something went wrong.'
 }
 

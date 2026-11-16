@@ -143,10 +143,10 @@ def _sizing(data: dict | None) -> list[str]:
 def _agent(files: list[tuple[str, dict]]) -> list[str]:
     out = ["## Agent evaluation", ""]
     if not files:
-        return out + ["No agent results yet. With `GROQ_API_KEY` in `.env`, run "
-                      "`uv run crew-eval agent --model openai/gpt-oss-120b` (and "
-                      "`--model openai/gpt-oss-20b`), then `uv run crew-eval report`. "
-                      "It uses Groq's free tier and is resumable.", ""]
+        return out + ["No agent results yet. With `ANTHROPIC_API_KEY` in `.env`, run "
+                      "`uv run crew-eval agent` (Claude Haiku; or `--model "
+                      "openai/gpt-oss-120b` with `GROQ_API_KEY`), then "
+                      "`uv run crew-eval report`. It is resumable.", ""]
     n_cases = max(d.get("config", {}).get("n_cases") or d["summary"]["all"]["n"]
                   for _, d in files)
     n_cats = max(len(d["summary"]["by_category"]) for _, d in files)

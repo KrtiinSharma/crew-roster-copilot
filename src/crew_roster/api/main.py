@@ -24,7 +24,7 @@ from pydantic import BaseModel, Field, field_validator
 
 from crew_roster.agent.explain import explain_changes
 from crew_roster.agent.graph import AgentAnswer, ChatTurn, run_agent
-from crew_roster.agent.llm import LlmFactory, groq_llm_factory
+from crew_roster.agent.llm import LlmFactory, active_provider, default_llm_factory
 from crew_roster.agent.tools import RulesetName
 from crew_roster.config import get_settings
 from crew_roster.disrupt import Disruption
@@ -81,7 +81,7 @@ async def request_validation_error(request: Request,
 
 
 def get_llm_factory() -> LlmFactory | None:
-    return groq_llm_factory if get_settings().groq_api_key else None
+    return default_llm_factory if active_provider() else None
 
 
 _hits: dict[str, deque] = defaultdict(deque)
@@ -209,7 +209,8 @@ async def replan_endpoint(req: ScenarioRequest,
 async def chat(req: ChatRequest,
                factory: LlmFactory | None = Depends(get_llm_factory)) -> AgentAnswer:
     if factory is None:
-        raise HTTPException(503, "The assistant is not configured (no GROQ_API_KEY).")
+        raise HTTPException(
+            503, "The assistant is not configured (no ANTHROPIC_API_KEY or GROQ_API_KEY).")
     *history, question = req.messages
     try:
         return await run_in_threadpool(run_agent, question.content, history, req.ruleset,

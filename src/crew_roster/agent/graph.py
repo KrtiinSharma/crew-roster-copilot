@@ -13,7 +13,7 @@ from langgraph.graph import END, START, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode
 from pydantic import BaseModel, Field
 
-from crew_roster.agent.llm import LlmFactory, groq_llm_factory, text_of
+from crew_roster.agent.llm import LlmFactory, default_llm_factory, text_of
 from crew_roster.agent.numbers import check_numbers
 from crew_roster.agent.prompts import SYSTEM_PROMPT
 from crew_roster.agent.tools import Toolbox, ToolCallTrace
@@ -82,7 +82,7 @@ def build_graph(llm: Runnable, tools: Sequence[BaseTool]):
 
 
 def run_agent(question: str, history: Sequence[ChatTurn], ruleset: str,
-              disruptions: Sequence[Disruption], llm_factory: LlmFactory = groq_llm_factory,
+              disruptions: Sequence[Disruption], llm_factory: LlmFactory = default_llm_factory,
               time_limit: float = 10.0) -> AgentAnswer:
     box = Toolbox(ruleset, disruptions, time_limit)
     graph = build_graph(llm_factory(box.tools), box.tools)

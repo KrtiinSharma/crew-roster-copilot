@@ -8,9 +8,34 @@ from langchain_core.messages import BaseMessage
 from langchain_core.runnables import Runnable
 from langchain_core.tools import BaseTool
 
-from crew_roster.config import get_settings
+from crew_roster.config import Settings, get_settings
 
 LlmFactory = Callable[[Sequence[BaseTool]], Runnable]
+
+PROVIDERS = ("anthropic", "groq")
+
+
+def active_provider(s: Settings | None = None) -> str | None:
+    """Which LLM answers chat: LLM_PROVIDER if set, else Claude when ANTHROPIC_API_KEY is
+    present, else Groq when GROQ_API_KEY is present, else None (chat is off)."""
+    s = s or get_settings()
+    keys = {"anthropic": s.anthropic_api_key, "groq": s.groq_api_key}
+    choice = s.llm_provider.strip().lower()
+    if choice in PROVIDERS:
+        return choice if keys[choice] else None
+    return next((p for p in PROVIDERS if keys[p]), None)
+
+
+def claude_llm_factory(tools: Sequence[BaseTool]) -> Runnable:
+    """Claude (CLAUDE_MODEL, default claude-haiku-5-5) at low effort, tools bound."""
+    from langchain_anthropic import ChatAnthropic
+
+    s = get_settings()
+    if not s.anthropic_api_key:
+        raise RuntimeError("ANTHROPIC_API_KEY is not set in .env")
+    llm = ChatAnthropic(model=s.claude_model, api_key=s.anthropic_api_key, max_tokens=8000,
+                        max_retries=2, timeout=30, output_config={"effort": "low"})
+    return llm.bind_tools(list(tools)) if tools else llm
 
 
 def groq_llm_factory(tools: Sequence[BaseTool]) -> Runnable:
@@ -29,6 +54,14 @@ def groq_llm_factory(tools: Sequence[BaseTool]) -> Runnable:
 
     return build(s.answer_model).with_fallbacks(
         [build(s.fast_model)], exceptions_to_handle=(RateLimitError,))
+
+
+def default_llm_factory(tools: Sequence[BaseTool]) -> Runnable:
+    """The configured provider (see active_provider)."""
+    provider = active_provider()
+    if provider is None:
+        raise RuntimeError("no LLM key: set ANTHROPIC_API_KEY or GROQ_API_KEY in .env")
+    return (claude_llm_factory if provider == "anthropic" else groq_llm_factory)(tools)
 
 
 def text_of(message: BaseMessage) -> str:

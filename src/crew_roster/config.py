@@ -14,6 +14,8 @@ ROOT = Path(__file__).resolve().parents[2]
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ROOT / ".env", extra="ignore")
 
+    llm_provider: str = "auto"  # auto | anthropic | groq (auto: Claude if its key is set)
+    claude_model: str = "claude-haiku-5-5"
     groq_api_key: str = ""
     answer_model: str = "openai/gpt-oss-120b"
     fast_model: str = "openai/gpt-oss-20b"
@@ -23,7 +25,7 @@ class Settings(BaseSettings):
     langsmith_tracing: bool = False
     langsmith_project: str = "crew-roster-copilot"
 
-    anthropic_api_key: str = ""  # only for the optional eval judge (crew-eval agent --judge)
+    anthropic_api_key: str = ""  # chat with Claude, and the optional eval judge
     judge_model: str = "claude-haiku-5-5"
 
     allowed_origins: str = "http://localhost:5173"
