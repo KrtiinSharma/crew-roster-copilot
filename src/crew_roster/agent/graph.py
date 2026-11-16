@@ -11,7 +11,7 @@ from langchain_core.tools import BaseTool
 from langgraph.errors import GraphRecursionError
 from langgraph.graph import END, START, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from crew_roster.agent.llm import LlmFactory, groq_llm_factory, text_of
 from crew_roster.agent.numbers import check_numbers
@@ -20,12 +20,13 @@ from crew_roster.agent.tools import Toolbox, ToolCallTrace
 from crew_roster.disrupt import Disruption
 
 MAX_RETRIES = 1
+NO_ANSWER = "I couldn't produce an answer; please rephrase."
 FEEDBACK = "number_check"  # name on the feedback message, so it is not taken as a new question
 
 
 class ChatTurn(BaseModel):
     role: Literal["user", "assistant"]
-    content: str
+    content: str = Field(min_length=1, max_length=2000)
 
 
 class AgentAnswer(BaseModel):
@@ -51,9 +52,9 @@ def build_graph(llm: Runnable, tools: Sequence[BaseTool]):
         msgs = state["messages"]
         start = max(i for i, m in enumerate(msgs)
                     if isinstance(m, HumanMessage) and m.name != FEEDBACK)
-        sources = [SYSTEM_PROMPT, text_of(msgs[start])]
+        sources = [SYSTEM_PROMPT]
         sources += [text_of(m) for m in msgs[start:] if isinstance(m, ToolMessage)]
-        result = check_numbers(text_of(msgs[-1]), sources)
+        result = check_numbers(text_of(msgs[-1]), sources, convertible=[text_of(msgs[start])])
         retries = state.get("retries", 0) + (0 if result.ok else 1)
         return {"check": result.model_dump(), "retries": retries}
 
@@ -97,5 +98,9 @@ def run_agent(question: str, history: Sequence[ChatTurn], ruleset: str,
                                   "Please ask a narrower question.",
                            verified=False, ungrounded=[], tool_calls=box.trace)
     check = state["check"]
-    return AgentAnswer(answer=text_of(state["messages"][-1]), verified=check["ok"],
+    answer = text_of(state["messages"][-1]).strip()
+    if not answer:
+        return AgentAnswer(answer=NO_ANSWER, verified=False, ungrounded=[],
+                           tool_calls=box.trace)
+    return AgentAnswer(answer=answer, verified=check["ok"],
                        ungrounded=check["ungrounded"], tool_calls=box.trace)

@@ -86,3 +86,23 @@ def test_numbers_from_earlier_turns_do_not_ground_a_new_answer():
                ChatTurn(role="assistant", content="12.5 hours")]
     ans = run_agent("and now?", history, "dgca_current", [], llm_factory=factory_for(model))
     assert not ans.verified
+
+
+def test_question_minutes_ground_hours_but_tool_minutes_do_not():
+    model = ScriptedChatModel(script=[AIMessage(content="A 90 minute delay is 1.5 hours.")])
+    ans = run_agent("What if SK115 is delayed by 90 minutes?", [], "dgca_current", [],
+                    llm_factory=factory_for(model))
+    assert ans.verified
+    model = ScriptedChatModel(script=[
+        tool_call("get_roster", {"day": 1}), AIMessage(content="You have 60 hours left.")])
+    ans = run_agent("How many hours are left?", [], "dgca_current", [],
+                    llm_factory=factory_for(model))
+    assert not ans.verified and ans.ungrounded == ["60"]
+
+
+def test_blank_answer_is_replaced_and_not_verified():
+    model = ScriptedChatModel(script=[AIMessage(content="  ")])
+    ans = run_agent("Is the roster legal?", [], "dgca_current", [],
+                    llm_factory=factory_for(model))
+    assert ans.answer == "I couldn't produce an answer; please rephrase."
+    assert not ans.verified

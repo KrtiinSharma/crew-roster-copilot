@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import time
 from collections.abc import Callable, Sequence
 from typing import Literal
@@ -24,6 +25,7 @@ from crew_roster.service import (
     sizing,
 )
 
+log = logging.getLogger(__name__)
 RulesetName = Literal["dgca_current", "dgca_dec2025_exemption"]
 MAX_ROWS = 25
 MAX_CHANGES = 15
@@ -47,20 +49,21 @@ class StatusArgs(BaseModel):
 
 
 class SickArg(BaseModel):
-    pilot_id: str
-    from_day: int = Field(ge=0, le=6)
-    to_day: int = Field(ge=0, le=6)
+    pilot_id: str = Field(description="Pilot id such as DEL-C04")
+    from_day: int = Field(ge=0, le=6, description="First sick roster day 0-6")
+    to_day: int = Field(ge=0, le=6, description="Last sick roster day 0-6")
 
 
 class DelayArg(BaseModel):
     flight_id: str = Field(description="Flight id with day, e.g. SK115-D2")
-    minutes: int = Field(gt=0, le=600)
+    minutes: int = Field(gt=0, le=600, description="Delay in minutes (1-600)")
 
 
 class WhatIfArgs(BaseModel):
     sick: list[SickArg] = Field(default_factory=list)
     delays: list[DelayArg] = Field(default_factory=list)
-    cancel_flight_ids: list[str] = Field(default_factory=list)
+    cancel_flight_ids: list[str] = Field(
+        default_factory=list, description="Flight ids with day to cancel, e.g. SK115-D2")
     ruleset: RulesetName | None = None
 
 
@@ -97,6 +100,20 @@ def _names(problem: Problem, ids) -> dict[str, str]:
 def _jsonable(kwargs: dict) -> dict:
     return json.loads(json.dumps(
         kwargs, default=lambda o: o.model_dump() if hasattr(o, "model_dump") else str(o)))
+
+
+def _invalid_args(exc: Exception) -> dict:
+    """The raw arguments as far as the validation error shows them: the handler only gets
+    the exception, so this is the whole input when a field is missing, else the bad values."""
+    errors = getattr(exc, "errors", None)
+    args: dict = {}
+    for e in errors() if callable(errors) else ():
+        loc, value = tuple(e.get("loc", ())), e.get("input")
+        if e.get("type") == "missing" and isinstance(value, dict):
+            args.update(value)
+        elif loc:
+            args[".".join(str(p) for p in loc)] = value
+    return _jsonable(args)
 
 
 class Toolbox:
@@ -140,6 +157,9 @@ class Toolbox:
             except (ValueError, KeyError) as exc:  # bad ids/days: tell the model, don't crash
                 msg = f"not found: {exc.args[0]}" if isinstance(exc, KeyError) else str(exc)
                 out, ok = {"error": msg}, False
+            except Exception:  # a bug in a tool must not crash the chat request
+                log.exception("tool %s failed", name)
+                out, ok = {"error": f"internal error in {name}"}, False
             self.trace.append(ToolCallTrace(name=name, args=_jsonable(kwargs),
                                             seconds=round(time.perf_counter() - t0, 3), ok=ok))
             return json.dumps(out, separators=(",", ":"), default=str)
@@ -153,7 +173,8 @@ class Toolbox:
                 f"{'.'.join(str(p) for p in e.get('loc', ()))}: {e.get('msg', '')}"
                 for e in errors()
             ) if callable(errors) else str(exc)
-            self.trace.append(ToolCallTrace(name=name, args={}, seconds=0.0, ok=False))
+            self.trace.append(ToolCallTrace(name=name, args=_invalid_args(exc), seconds=0.0,
+                                            ok=False))
             return json.dumps({"error": f"invalid arguments: {detail}"}, separators=(",", ":"))
 
         return handle

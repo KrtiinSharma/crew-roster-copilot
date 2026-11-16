@@ -66,3 +66,32 @@ def test_schema_violations_come_back_as_json_and_are_traced():
     assert box.trace[-1].name == "pilot_status" and box.trace[-1].ok is False
     assert "error" in call(box, "min_pilots_needed", base="XXX")
     assert "error" in call(box, "pilot_status", day=2)  # missing pilot_id
+
+
+def test_unexpected_errors_come_back_as_json(monkeypatch):
+    import crew_roster.agent.tools as tools_mod
+
+    def boom(*a, **k):
+        raise IndexError("oops")
+
+    monkeypatch.setattr(tools_mod, "lookup", boom)
+    box = Toolbox("dgca_current", [])
+    assert call(box, "lookup", query="SK115") == {"error": "internal error in lookup"}
+    assert box.trace[-1].name == "lookup" and box.trace[-1].ok is False
+
+
+def test_invalid_arguments_are_recorded_in_the_trace():
+    box = Toolbox("dgca_current", [])
+    call(box, "pilot_status", pilot_id="DEL-C01", day=9)
+    assert box.trace[-1].args == {"day": 9}  # the handler only sees the offending values
+    call(box, "pilot_status", day=2)  # missing pilot_id
+    assert box.trace[-1].args == {"day": 2}
+
+
+def test_what_if_arguments_are_described():
+    from crew_roster.agent.tools import DelayArg, SickArg, WhatIfArgs
+
+    for model, fields in ((SickArg, ["pilot_id", "from_day", "to_day"]),
+                          (DelayArg, ["minutes"]), (WhatIfArgs, ["cancel_flight_ids"])):
+        for f in fields:
+            assert model.model_fields[f].description, f"{model.__name__}.{f}"

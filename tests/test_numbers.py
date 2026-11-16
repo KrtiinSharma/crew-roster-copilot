@@ -11,11 +11,23 @@ def test_extract_ignores_ids_and_reads_durations_and_clocks():
     assert values("ruleset dgca_dec2025_exemption") == []
 
 
-def test_minutes_in_tools_ground_hours_in_the_answer():
+def test_minutes_convert_only_from_the_question_not_from_tools():
     src = ['{"used_minutes": 510, "limit_hours": 35.0}']
-    assert check_numbers("8.5 hours used of 35", src).ok
-    assert check_numbers("8h30 used", src).ok
-    assert check_numbers("about 8.5h", src).ok
+    assert not check_numbers("8.5 hours used of 35", src).ok
+    assert check_numbers("510 minutes used of 35", src).ok
+    question = ["Delay SK115 by 90 minutes"]
+    assert check_numbers("That is 1.5 hours.", [], convertible=question).ok
+    assert check_numbers("About 1h30 late.", [], convertible=question).ok
+    assert check_numbers("90 minutes late.", [], convertible=question).ok
+
+
+def test_real_tool_output_does_not_ground_converted_numbers():
+    from crew_roster.agent.tools import Toolbox
+
+    box = Toolbox("dgca_current", [])
+    out = next(t for t in box.tools if t.name == "get_roster").invoke({"day": 1})
+    assert not check_numbers("You have 60 hours left.", [out]).ok
+    assert not check_numbers("That needs 300 pilots.", [out]).ok
 
 
 def test_rounding_to_one_decimal_is_allowed_but_new_numbers_are_not():

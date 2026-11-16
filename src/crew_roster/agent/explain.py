@@ -73,9 +73,12 @@ def explain_changes(changes: Sequence[Change], problem: Problem,
     except Exception as exc:  # optional polish: never fail the request over it
         log.warning("LLM explanations failed, using templates: %s", exc)
         return notes
+    pilots = problem.pilot_map()
     out = {}
-    for cid, note in notes.items():
-        cand = rewritten.get(cid)
-        ok = isinstance(cand, str) and cand.strip() and check_numbers(cand, [note]).ok
-        out[cid] = cand.strip() if ok else note
+    for c in changes:
+        note, cand = notes[c.id], rewritten.get(c.id)
+        must = [c.duty_id] + ([pilots[c.new_pilot].name] if c.new_pilot else [])
+        ok = (isinstance(cand, str) and cand.strip() and all(m in cand for m in must)
+              and check_numbers(cand, [note]).ok)
+        out[c.id] = cand.strip() if ok else note
     return out

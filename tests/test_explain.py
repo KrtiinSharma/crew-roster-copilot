@@ -57,3 +57,13 @@ def test_llm_failure_falls_back_to_templates():
     assert explain_changes(changes, problem, broken) == {
         c.id: template(c, problem) for c in changes}
     assert explain_changes(changes, problem, None) == {c.id: template(c, problem) for c in changes}
+
+
+def test_llm_rewrite_must_name_the_duty_and_the_new_pilot():
+    problem, changes = rest_case()
+    cid = changes[0].id
+    for text in ("C2 flies it because C1 would only get 9h00 of rest.",       # no duty id
+                 "D2 is reassigned because C1 would only get 9h00 of rest."):  # no new pilot
+        model = ScriptedChatModel(script=[AIMessage(content=json.dumps({cid: text}))])
+        assert explain_changes(changes, problem, lambda tools, m=model: m)[cid] == template(
+            changes[0], problem)

@@ -31,9 +31,14 @@ class NumberCheck(BaseModel):
     ungrounded: list[str]
 
 
-def check_numbers(answer: str, sources: Sequence[str]) -> NumberCheck:
+def check_numbers(answer: str, sources: Sequence[str],
+                  convertible: Sequence[str] = ()) -> NumberCheck:
+    """`sources` (tool outputs, prompt) ground their numbers as-is: tools already give hours.
+    `convertible` (the user's question) also grounds minute/hour conversions of its numbers."""
     pool: set[float] = set()
     for src in sources:
+        pool |= {v for _, v in extract(src)}
+    for src in convertible:
         for _, v in extract(src):
             pool |= {v, v / 60, v * 60}
     bad = [tok for tok, v in extract(answer)

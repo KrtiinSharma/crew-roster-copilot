@@ -24,7 +24,7 @@ def groq_llm_factory(tools: Sequence[BaseTool]) -> Runnable:
 
     def build(model: str):
         llm = ChatGroq(model=model, api_key=s.groq_api_key, temperature=0, max_retries=1,
-                       reasoning_effort="low")
+                       reasoning_effort="low", timeout=20)
         return llm.bind_tools(list(tools)) if tools else llm
 
     return build(s.answer_model).with_fallbacks(
