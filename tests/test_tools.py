@@ -57,3 +57,12 @@ def test_errors_come_back_as_json():
     assert "error" in call(box, "explain_change", change_id="X:CPT")
     assert box.trace[-1].ok is False
     assert call(box, "lookup", query="SK115")["flights"]
+
+
+def test_schema_violations_come_back_as_json_and_are_traced():
+    box = Toolbox("dgca_current", [])
+    out = call(box, "pilot_status", pilot_id="DEL-C01", day=9)
+    assert out["error"].startswith("invalid arguments:") and "day" in out["error"]
+    assert box.trace[-1].name == "pilot_status" and box.trace[-1].ok is False
+    assert "error" in call(box, "min_pilots_needed", base="XXX")
+    assert "error" in call(box, "pilot_status", day=2)  # missing pilot_id

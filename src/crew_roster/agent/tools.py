@@ -127,7 +127,8 @@ class Toolbox:
         ]
         self.tools: list[BaseTool] = [
             StructuredTool.from_function(func=self._wrap(name, fn), name=name,
-                                         description=desc, args_schema=schema)
+                                         description=desc, args_schema=schema,
+                                         handle_validation_error=self._invalid(name))
             for name, desc, schema, fn in specs
         ]
 
@@ -137,12 +138,25 @@ class Toolbox:
             try:
                 out, ok = fn(**kwargs), True
             except (ValueError, KeyError) as exc:  # bad ids/days: tell the model, don't crash
-                out, ok = {"error": str(exc)}, False
+                msg = f"not found: {exc.args[0]}" if isinstance(exc, KeyError) else str(exc)
+                out, ok = {"error": msg}, False
             self.trace.append(ToolCallTrace(name=name, args=_jsonable(kwargs),
                                             seconds=round(time.perf_counter() - t0, 3), ok=ok))
             return json.dumps(out, separators=(",", ":"), default=str)
 
         return run
+
+    def _invalid(self, name: str) -> Callable[[Exception], str]:
+        def handle(exc: Exception) -> str:
+            errors = getattr(exc, "errors", None)
+            detail = "; ".join(
+                f"{'.'.join(str(p) for p in e.get('loc', ()))}: {e.get('msg', '')}"
+                for e in errors()
+            ) if callable(errors) else str(exc)
+            self.trace.append(ToolCallTrace(name=name, args={}, seconds=0.0, ok=False))
+            return json.dumps({"error": f"invalid arguments: {detail}"}, separators=(",", ":"))
+
+        return handle
 
     def current(self) -> ScenarioResult:
         return evaluate(self.ruleset, self.disruptions, self.time_limit)
