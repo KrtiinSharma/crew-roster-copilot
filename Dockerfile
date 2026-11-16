@@ -1,4 +1,4 @@
-# Backend image for the Hugging Face Space or Cloud Run (also runs anywhere: docker run -p 8080:8080).
+# Backend image for Cloud Run (also runs anywhere: docker run -p 8080:8080).
 FROM python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1     UV_COMPILE_BYTECODE=1     UV_LINK_MODE=copy

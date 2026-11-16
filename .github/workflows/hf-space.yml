@@ -1,8 +1,9 @@
 name: Deploy backend to Hugging Face Space
 
-# Pushes only what the Dockerfile needs to the Space, with the Space README from deploy/hf-space.
+# Pushes a Gradio Space (deploy/hf-space/app.py serving the FastAPI app, src/, requirements.txt
+# from pyproject.toml) to Hugging Face. Free accounts get Gradio Spaces on ZeroGPU; Docker is paid.
 # Needs, under Settings -> Secrets and variables -> Actions:
-#   secret   HF_TOKEN  a Hugging Face access token with write access
+#   secret   HF_TOKEN  a Hugging Face access token with write access to the Space
 #   variable HF_SPACE  <hf-username>/<space-name>, e.g. someone/crew-roster-copilot
 on:
   push:
@@ -10,8 +11,6 @@ on:
     paths:
       - "src/**"
       - "pyproject.toml"
-      - "uv.lock"
-      - "Dockerfile"
       - "deploy/hf-space/**"
       - ".github/workflows/hf-space.yml"
   workflow_dispatch:
@@ -37,11 +36,11 @@ jobs:
             echo "::error::Set the secret HF_TOKEN and the variable HF_SPACE (Settings -> Secrets and variables -> Actions)."
             exit 1
           fi
-      - name: Build the Space tree
-        run: |
-          mkdir space
-          cp -r Dockerfile pyproject.toml uv.lock src space/
-          cp deploy/hf-space/README.md space/README.md
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build the Space folder
+        run: python deploy/hf-space/make_space.py space
       - name: Push to the Space
         working-directory: space
         env:
